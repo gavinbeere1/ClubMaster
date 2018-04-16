@@ -46,6 +46,7 @@
 	<br /> 
 	<ul>
     <th:block th:object="${myteam}" th:each="item : ${myteam?.userLogins}">
+    <h5>-----------------------------------------------</h5>
         <h5>ID:<text th:text="${item?.id}" /> </h5>
     
     <h5>First Name:<text th:text="${item?.firstName}" /> </h5>

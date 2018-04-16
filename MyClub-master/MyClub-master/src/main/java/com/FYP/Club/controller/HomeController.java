@@ -506,14 +506,14 @@ public class HomeController {
 		return cueList;
 	}
   
-  
+ 
    @RequestMapping(value="/viewplayer/{id}", method=RequestMethod.GET)
    public String ViewPlayer(Model model, @PathVariable Long id) {
 	   
 	   UserLogin player = userRepository.findOne(id);
 	   
 	   String image = player.getImagePath();
-	   System.out.println("IMAGE: " + image);
+	
 	   
 	   model.addAttribute("image", image);
 	   model.addAttribute("player", player);
@@ -599,13 +599,14 @@ public class HomeController {
 	   
 	   return "inbox";
    }
- 
+
    @RequestMapping(value="/showplayers", method=RequestMethod.GET)
    public String players(Model model)
    {
 	   String type = "Player";	  
 	 
 	   ArrayList<UserLogin> players = (ArrayList<UserLogin>) userRepository.findByUserType(type);
+	   
 	   
 //	   List<UserLogin> players = (List<UserLogin>) userRepository.findByUserType("Player");
 	   model.addAttribute("players", players);
@@ -618,7 +619,7 @@ public class HomeController {
    {
 
 	   return "players2";
-
+ 
    }
    @RequestMapping(value="/searchP", method=RequestMethod.GET)
    @ResponseBody
@@ -627,10 +628,9 @@ public class HomeController {
 	   String type = "Player";	  
 	 
 	   ArrayList<UserLogin> cueList = userRepository.findByUserType(type);	   
-//	   System.out.print("*********" + cueList.size());
 
-//	   List<UserLogin> cueList = cueList1.Cast<UserLogin>().ToList();
-//	   responseGenerator.setJSONData(data.toMap());
+	
+
 	    return cueList;
 	   
    }
@@ -1079,6 +1079,7 @@ public class HomeController {
 		
 		model.addAttribute("username", user.getUserName());
 		model.addAttribute("PlayerInfo", new PlayerInfo()); 
+		
 		if (user.getUserType().equals("Player"))
 		{
 			

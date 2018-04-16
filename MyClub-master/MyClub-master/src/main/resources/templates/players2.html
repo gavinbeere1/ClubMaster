@@ -49,11 +49,12 @@
 			<table id="customerTable" class="table table-bordered table-hover table-responsive">
 				<thead>
 					<tr>
+						
 						<th>Id</th>
 						<th>Name</th>
 						<th>Surname</th>
 						<th>Username</th>	
-								<th>Position</th>	
+							 	<th>Position</th> 
 										
 					</tr>
 				</thead>
@@ -75,12 +76,13 @@
 				$.each(result, function(i, userLogin){
 					
 					var customerRow = '<tr>' +
-										'<td>' + userLogin.id + '</td>' +
+					'<td><img src="/images/' + userLogin.imagePath + '"/></td>' +
+									'<td>' + userLogin.id + '</td>' +
 										'<td>' + userLogin.firstName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.lastName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.userName + '</td>' +
-										'<td>' + userLogin.playerinfo.position + '</td>' +
-										
+  										'<td>' + userLogin.playerinfo.position + '</td>' +
+  									
 															
 										'<td><a href="/viewplayer/'+userLogin.id+'">View Player</a></td>' +	 '</tr>';
 									

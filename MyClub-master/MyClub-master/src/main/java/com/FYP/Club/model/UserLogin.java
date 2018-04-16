@@ -59,8 +59,6 @@ public class UserLogin {
 		
 	}
 
-	
-
 	public UserLogin(Long id, String firstName, String lastName, Long phone,
 			String userName, String address, String password,
 			boolean userStatus, String userType, String position,

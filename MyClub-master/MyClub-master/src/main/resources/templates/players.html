@@ -45,6 +45,7 @@
  	<table class = "table table-striped">
  	
  	<tr>
+ 	<th></th>
  	<th> Id </th>
  	<th> First Name </th>
  	<th> Last Name </th>
@@ -54,8 +55,10 @@
  	
  	</tr>
  	
+ 			 
  	
  	<tr th:each="userLogin : ${players}">
+ 	<td><img th:src="@{${'/images/' + userLogin.imagePath}}"  /></td>
  	<td th:text="${userLogin.id}"></td>
  	<td th:text="${userLogin.firstName}"></td>
  	<td th:text="${userLogin.lastName}"></td>
