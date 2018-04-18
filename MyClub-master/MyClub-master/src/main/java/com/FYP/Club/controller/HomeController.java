@@ -291,6 +291,119 @@ public class HomeController {
 
 	    return new ResponseEntity<>(HttpStatus.OK);
 	  }
+	  
+	  
+	  @RequestMapping(value = "/some-action2", method = RequestMethod.POST)
+	  @ResponseBody
+	  public ResponseEntity<?> someAction2(@RequestParam("firstName") String tname) {
+
+		  
+		////This gets user (outbox i.e. sending invitation)//////
+				  Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+			      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+			      UserLogin user = userRepository.findByUserName(email);
+			      
+			      UserLogin user2 = userRepository.findByUserName(tname);
+			      
+			      String name = user.getUserName();
+			      String fname = user.getFirstName();
+			      String sname = user.getLastName();
+			      
+			      Outbox outbox = oR.findBySenderNameAndReceiverName(name, tname);
+			      
+			      if (oR.findBySenderNameAndReceiverName(name, tname) == null)
+			      {
+
+			      
+			      Outbox out = new Outbox();
+			     
+			     
+			      out.setSenderName(name);
+			      out.setStatus("Pending");
+			      out.setViewed("Unseen");
+			      
+			      
+			      
+			      Inbox in = new Inbox();
+			      
+			      in.setStatus("Pending");
+			      in.setViewed("Unseen");
+			      in.setSenderName(name);
+
+		          ////////////////////////////////////
+			      //https://stackoverflow.com/questions/34691579/responseentity-how-to-obtain-the-body-in-html   (EXCEPTION HANDLING)
+			      //Gonna try and to disallow duplicate inbox's here, this works, need to display a rejection though ?
+			      
+			
+			      ///////////////////////////////////
+				  //// This is searching the team for a manager (inbox i.e. Recieving invitation)
+//				  Team team1 = teamRepository.findByTeamName(tname);
+				  
+				  
+//				  Set<UserLogin> userLogins = team1.getUserLogins();
+			      
+			      ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
+				   
+				  for (Team t : teams)
+				  {
+				  
+				  for (UserLogin s : t.getUserLogins()) {
+					  
+					
+					  
+					  if (s.getUserName().equals(tname))
+					  {
+					     if (s.getUserType().equals("Manager"))
+						  {
+					    	  //Manager cant apply to his own team
+					    	  return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+						  }
+					      else
+					      {
+					    	  //System.out.println("AAAAAAAAA It doesnt work...?");
+					     
+						  out.setReceiverName(tname);					 
+						  in.setReceiverName(tname);
+						  user2.addInbox(in);
+						  iR.save(in);
+						  userRepository.save(user2);
+						 
+					      }
+					    notificationService.notify(
+					    		
+					  	      new Notification("---------New Reguest!--------- \nUserName: " + name + "\nName: " + fname + " " + sname + "\nWants you to join their team."), // notification object
+					  	    s.getUserName()                  // username
+					  	    );
+					  }
+					  else
+					  {
+					        System.out.println("Success");
+
+						  out.setReceiverName(tname);					 
+						  in.setReceiverName(tname);
+						  user2.addInbox(in);
+						  iR.save(in);
+						  userRepository.save(user2);
+					  }
+
+					}
+				  
+				  }
+
+				  user.addOutbox(out);			
+				  oR.save(out);			  
+				  userRepository.save(user);
+				  
+			      }
+			      else
+			      {
+			          System.out.println("Fail");
+
+			      }
+				 
+	    return new ResponseEntity<>(HttpStatus.OK);
+	  }
 	  /////////////////////////////
 	  //3 methods below are for the login pages
 	  
@@ -448,6 +561,71 @@ public class HomeController {
       return "inbox";
    }
   
+   
+   
+   @RequestMapping(value = "/acceptmanager/{id:.+}", method={RequestMethod.POST, RequestMethod.GET})
+   public String AcceptManager(Principal principal, @PathVariable String id) throws ConcurrentModificationException{
+
+	  ///Need to check here if a player has already been accepted by a manager
+	   
+	   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	  
+	   UserLogin requestedUser = userRepository.findByUserName(id);
+	   
+	
+		   Inbox sendersInbox = iR.findBySenderNameAndReceiverName(requestedUser.getUserName(), email);
+		   Outbox outbox = oR.findBySenderNameAndReceiverName(requestedUser.getUserName(), email);
+//	  ArrayList<Inbox> SendersInbox = (ArrayList<Inbox>) iR.findBySenderName(requestedUser.getUserName()); 
+
+	 
+		  if (sendersInbox.getStatus().equals("Accepted"))
+		  {
+			  ok = false;
+			  System.out.println("Status = Accepted");
+			
+		  }
+		  else
+		  {
+			  ok = true;
+			  System.out.println("boolean is true, user will be accepted");
+
+		  }
+		  
+		  if (ok != false)
+		  {
+			  if ((sendersInbox != null) && (outbox != null))
+			  {
+				  
+				  outbox.setStatus("Accepted");
+				  System.out.println("Accepted");
+				  oR.save(outbox);
+				  
+				  sendersInbox.setStatus("Accepted");
+				  System.out.println("Accepted");
+				  iR.save(sendersInbox);   
+				  
+				  //below is commented out until user approves
+//				  requestedUser.setUserStatus(true);
+//				  requestedUser.setPosition("True");
+//				  t.addUserLogin(requestedUser);
+//					 teamRepository.save(t);
+					 
+					 
+					
+			  }
+			
+		  }
+		  
+
+		  
+		return "inbox";
+		  
+   }
+   
+   
+   
 //Unused method below (User has to apply now before joining a team) only for manager
    @RequestMapping(value = "/jointeam/{id}", method={RequestMethod.POST, RequestMethod.GET})
    public String joinTeam(Principal principal, @PathVariable Long id) {
@@ -486,13 +664,13 @@ public class HomeController {
 	   
 	//the code below should ideally return all the players associated with the above team id in an array list, this array list will be passed via thymeleaf to display all players
 	   
-
+	   String anythingBut = team.getTeamAddress();
 	   model.addAttribute("team", team);
-	   
-	  
+	   model.addAttribute("anythingBut", anythingBut);
+	  System.out.print(anythingBut);
 	   return "singleteam";
    }
- 
+
    @RequestMapping(value="/showteams", method=RequestMethod.GET)
    public String teams(Model model)
    {
@@ -521,7 +699,7 @@ public class HomeController {
 		return cueList;
 	}
   
- 
+
    @RequestMapping(value="/viewplayer/{id}", method=RequestMethod.GET)
    public String ViewPlayer(Model model, @PathVariable Long id) {
 	   
@@ -539,6 +717,7 @@ public class HomeController {
    @RequestMapping(value="/viewsender/{name:.+}", method=RequestMethod.GET)
    public String ViewSender(Model model, @PathVariable String name) throws NonUniqueResultException {
 	  
+	   String webPage="";
 
 	   //this method works, although returns "null" if theres duplicate users
 	   //wont work for ***@gmail.com address's (FIXED: truncating the name, see above {name:.+})
@@ -554,15 +733,39 @@ public class HomeController {
 	   iR.save(inbox);
 	   
 	   UserLogin player = userRepository.findByUserName(name);
-	   if (player != null){
-	   model.addAttribute("player", player);
-	   }
-	   else
+	
+	   if (player.getUserType().equals("Manager"))
 	   {
-	   System.out.println("Player is null");
+		   ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
+		   
+			  for (Team t : teams)
+			  {
+				  for(UserLogin ul : t.getUserLogins())
+				  {
+					  if(ul.getUserName().equals(name) && ul.getUserType().equals("Manager"))
+					  {
+					    model.addAttribute("t", t);
+						break;
+					  }
+				  }
+			  }
+		   webPage = "singlemanager";
+		   model.addAttribute("player", player);
+
 	   }
-	   return "singleplayer";
+	   if(player.getUserType().equals("Player"))
+	   {
+		   webPage = "singleplayer";
+		   model.addAttribute("player", player);
+
+
+	   }
+	   
+	   return webPage;
    }
+   
+   
+   
    
    @RequestMapping(value="/deletemessage/{name:.+}", method=RequestMethod.GET)
    public String DeletePlayer(Model model, @PathVariable String name) {
@@ -902,6 +1105,28 @@ public class HomeController {
 		return "inbox";
 	}
 	
+//	
+//	@RequestMapping(value="/viewOutbox", method=RequestMethod.GET)
+//	public String ManagersOutbox(Model model)
+//	{
+//
+//		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+//	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+//
+//	      UserLogin user = userRepository.findByUserName(email);
+//
+//	      
+//	      //only shows pending messages.
+//	      ArrayList<Outbox> inboxs =  oR.findBySenderName(email);
+//
+//		  
+//	      model.addAttribute("inboxs", inboxs);
+//		  
+//		 
+//	
+//		return "inbox";
+//	}
+	
 	@RequestMapping(value="/showallmessages", method=RequestMethod.GET)
 	public String ManagersInbox2(Model model)
 	{
@@ -933,8 +1158,7 @@ public class HomeController {
 //	      UserLogin user = userRepository.findByUserName(email);
 
 	      
-	      //only shows pending messages.
-	      ArrayList<Outbox> outboxs = (ArrayList<Outbox>) oR.findBySenderName(email);
+	      	      ArrayList<Outbox> outboxs = (ArrayList<Outbox>) oR.findBySenderName(email);
 
 		  
 	      model.addAttribute("outboxs", outboxs);
@@ -953,6 +1177,7 @@ public class HomeController {
 	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
 	      UserLogin user = userRepository.findByUserName(email);
+	      
 	      String status = user.getPosition();
 	      
 	      //only shows pending messages.
@@ -979,6 +1204,40 @@ public class HomeController {
 		return "outbox";
 	}
 	
+	@RequestMapping(value="/managersOutbox", method=RequestMethod.GET)
+	public String ManagersOutbox(Model model)
+	{
+
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+	      String status = user.getPosition();
+	      
+	  
+	      ArrayList<Outbox> outbox = (ArrayList<Outbox>) oR.findBySenderName(email);
+
+		  
+	      model.addAttribute("outbox", outbox);
+	      
+	      
+	      if (status.equals("True"))
+	      {
+	    	  status = "No";
+	    	  model.addAttribute("status", status);
+	      }
+	      else
+	      {
+	    	  status = "Yes";
+	    	  model.addAttribute("status", status);
+	      }
+	     
+		  
+		 
+	
+		return "Managersoutbox";
+	}
+	
 	   @RequestMapping(value="/viewManager/{name:.+}", method=RequestMethod.GET)
 	   public String ViewManager(Model model, @PathVariable String name) throws NonUniqueResultException {
 		  
@@ -997,6 +1256,21 @@ public class HomeController {
 		   oR.save(outbox);
 		   
 		   
+		   ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
+		   
+			  for (Team t : teams)
+			  {
+				  for(UserLogin ul : t.getUserLogins())
+				  {
+					  if(ul.getUserName().equals(name) && ul.getUserType().equals("Manager"))
+					  {
+					    model.addAttribute("t", t);
+						break;
+					  }
+				  }
+			  }
+		   
+		   
 		   UserLogin player = userRepository.findByUserName(name);
 		   if (player != null){
 		   model.addAttribute("player", player);
@@ -1007,7 +1281,89 @@ public class HomeController {
 		   }
 		   return "singlemanager";
 	   }
-	
+	   
+	   @RequestMapping(value="/viewPlayer/{name:.+}", method=RequestMethod.GET)
+	   public String ViewPlayer(Model model, @PathVariable String name) throws NonUniqueResultException {
+		  
+
+		   //this method works, although returns "null" if theres duplicate users
+		   //wont work for ***@gmail.com address's (FIXED: truncating the name, see above {name:.+})
+		   //Going to attempt to change the status of the notification to seen once a view player is clicked
+		   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+		   
+		  
+		   Outbox outbox = oR.findBySenderNameAndReceiverName(email, name);
+		   outbox.setViewed("Seen");
+		   ///
+		   oR.save(outbox);
+		   
+		   
+		   UserLogin player = userRepository.findByUserName(name);
+		   if (player != null){
+		   model.addAttribute("player", player);
+		   }
+		   else
+		   {
+		   System.out.println("Player is null");
+		   }
+		   return "singleplayer";
+	   }
+
+	   
+	   @RequestMapping(value="/playerapproveAndJoin/{name:.+}", method=RequestMethod.GET)
+	   public String ApproveAndJoinForPlayer(Model model, @PathVariable String name) throws NonUniqueResultException {
+		  
+
+		   System.out.println(name);
+		   
+
+		   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		   String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+		   
+		   
+		   Outbox outbox = oR.findBySenderNameAndReceiverName(name, email);
+		   outbox.setStatus("Approved");
+		   oR.save(outbox);
+		   
+		   Inbox inbox = iR.findBySenderNameAndReceiverName(name, email);
+		   inbox.setStatus("Approved");
+		   iR.save(inbox);
+		   
+		   
+		   
+		   UserLogin player = userRepository.findByUserName(email);
+		  
+		   ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
+		   
+			  for (Team t : teams)
+			  {
+				  for(UserLogin ul : t.getUserLogins())
+				  {
+					  if(ul.getUserName().equals(name) && ul.getUserType().equals("Manager"))
+					  {
+					    
+						ok = true;
+					    t.addUserLogin(player);
+					     teamRepository.save(t);
+						break;
+					  }
+				  }
+			  }
+			  if (ok == true)
+			  {
+				  player.setPosition("True");
+				  userRepository.save(player);
+			  
+			  }
+		   
+		
+		   return "welcome";
+	   }
+	   
+	   
 	   @RequestMapping(value="/approveAndJoin/{name:.+}", method=RequestMethod.GET)
 	   public String ApproveAndJoin(Model model, @PathVariable String name) throws NonUniqueResultException {
 		  
@@ -1024,11 +1380,11 @@ public class HomeController {
 
 		   
 		   
-		   Outbox outbox = oR.findBySenderNameAndReceiverName(email, name);
+		   Outbox outbox = oR.findBySenderNameAndReceiverName(name, email);
 		   outbox.setStatus("Approved");
 		   oR.save(outbox);
 		   
-		   Inbox inbox = iR.findBySenderNameAndReceiverName(email, name);
+		   Inbox inbox = iR.findBySenderNameAndReceiverName(name, email);
 		   inbox.setStatus("Approved");
 		   iR.save(inbox);
 		   

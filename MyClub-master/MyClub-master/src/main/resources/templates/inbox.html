@@ -60,12 +60,14 @@
  	<td th:text="${inbox.status}"></td>
  	 
  	 <td>
- 	<a th:href="@{/viewsender/{name}(name=${inbox.senderName})}"><span>View Player</span></a>
+ 	<a th:href="@{/viewsender/{name}(name=${inbox.senderName})}"><span>View Users Profile</span></a>
+ 	</td>
+	<td>
+  	<a style="color:blue" th:href="@{/playerapproveAndJoin/{name}(name=${inbox.senderName})}" th:if="${not #strings.startsWith(inbox?.status, 'P')}">Join Team?!</a>
  	</td>
 	<td></td>
-	<td></td>
  	 <td>
- 	<a th:href="@{/deletemessage/{name}(name=${inbox.status})}" th:if="${not #strings.startsWith(inbox.status, 'D')}" ><span>Decline Request</span></a>
+ 	<a th:href="@{/deletemessage/{name}(name=${inbox.senderName})}" th:if="${not #strings.startsWith(inbox.status, 'D')}" ><span>Decline Request</span></a>
  	</td>
  	
  	

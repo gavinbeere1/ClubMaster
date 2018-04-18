@@ -67,16 +67,12 @@
  	<td th:text="${team.teamAddress}"></td>
  	 <td th:text="${team.level}"></td>
  	
- 	<td><div><button onclick="myFunction()">Show on Map</button>  </div></td>
  	
- 	<td><div><button onclick="testAjax()">Test Ajax</button>  </div></td>
  	
 
  	
  	     
-	<td>
- 	<a onclick="ConfirmAlert();" th:href="@{/jointeam/{id}(id=${team.id})}"><span>Join Team</span></a>
- 	</td>
+	
  	<td>
  	<a th:href="@{/viewteam/{id}(id=${team.id})}"><span>View Team</span></a>
  	</td>
@@ -85,9 +81,9 @@
  	 	
  
  <p id="demo"></p>
+
  
-  <div id="map" style="width:400px;height:400px;"></div>
- 
+
  </div>
  <br />
 	          <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
@@ -98,11 +94,6 @@
 
  
 
-<script>
-function testAjax() {
-
-}
-</script>
 
 
 <script>

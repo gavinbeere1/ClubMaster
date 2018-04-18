@@ -34,29 +34,58 @@
  
     <a> <img src="images/logo.jpg"> </img></a>
  </div>
+	
 <center>
 <body>
-<h1> Manager </h1>
-   <a style="color:blue" th:href="@{/home}">HomeScreen!</a>
-    <br/>
-       <a style="color:blue" th:href="@{/showteams}">Show Teams</a>
-      <br/>
-       <a style="color:blue" th:href="@{/showplayers2}">Search for Players</a>
-         <br/>
-     <a style="color:blue" th:href="@{/showplayers}">Show Players</a>
-     <br/>
-     <a style="color:blue" th:href="@{/shownotifications}">View Inbox</a>
-     <br/>
-          <a style="color:blue" th:href="@{/managersOutbox}">View Outbox</a>
-     <br/>
- <a style="color:blue" th:href="@{/viewmyteam}">My Team</a>
-         <br/>
-          <a style="color:blue" th:href="@{/viewpositioninfo}">Team Position Info.</a>
-         <br/>
-</body>
 
- <form th:action="@{/logout}" method="post">
-         <input type="submit" value="Sign Out"/>
-     </form>
+ <div class="container">
+ 
+ 
+ 
+ 	<h3 style="color:blue">Applications sent</h3>
+ 	
+ 	<h4>Can you accept offers? (i.e Are you a free agent): <text th:text="${status}" /></h4>
+ 	
+ 	
+<table class = "table table-striped" id="teamTable">
+ 	
+ 	<tr>
+ 	
+ 	<th> User </th>
+ 	<th> Message Status </th>
+ 	
+ 	</tr>
+ 	
+ 	<tr th:each="outbox : ${outbox}">
+ 	<td th:text="${outbox.receiverName}"></td>
+ 	<td th:text="${outbox.status}"></td>
+ 	 
+ 	 <td>
+ 	<a th:href="@{/viewPlayer/{name}(name=${outbox.receiverName})}"><span>View Player</span></a>
+ 	</td>
+ 	<td>
+<!--  	<a style="color:blue" th:href="@{/approveAndJoin/{name}(name=${outbox.receiverName})}" th:if="${not #strings.startsWith(outbox.status, 'P')}">Join Team?!</a>
+ --> 	</td>
+	
+ <!-- 	 <td>
+ 	<a th:href="@{/deletemessage/{name}(name=${outbox.receiverName})}"><span>Decline Request</span></a> 
+ 	</td>
+ 	-->
+ 	
+ 	
+ 
+ 	</tr>
+ 	</table>
+ 
+ </div>
+ 
+ 
+ <br />
+			<a style="color:blue" th:href="@{/showallOutboxmessages}"><span>Show Seen Notifications</span></a>
+	<br /><br />
+	          <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>			
+
+
+</body>
 </center>
 </html>

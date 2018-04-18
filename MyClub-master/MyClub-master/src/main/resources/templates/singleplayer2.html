@@ -25,7 +25,7 @@
 	<h3>Player</h3>
 			
 		 <img th:src="@{${'/images/' + image}}"  />
-	
+	<h4>Email: <text th:text="${player.userName}" /> </h4>
 	<h4>Name: <text th:text="${player.firstName}" /> </h4>
 	<h4>Surname: <text th:text="${player.lastName}" /> </h4>
 	<h4>Phone: <text th:text="${player.phone}" /> </h4>
@@ -33,9 +33,10 @@
 	<h4>Member of team: <text th:text="${player.position}" /> </h4>
 	<h4>Position: <text th:text="${player?.playerinfo?.position}" /> </h4>
 	
+    <input id="do-some-action2" type="button" value="Invite Player To Join" />
 
  	
- 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+ 	             <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
  	
 	   <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
 	   
@@ -46,6 +47,41 @@
 
 	
 </div>
+<!-- Javascript functions -->
+    <script th:inline="javascript">
+
+    /**
+       * Send an action to the server.
+       */
+      function sendAction(event) {
+        event.preventDefault();
+
+        /*<![CDATA[*/
+
+        var name = /*[[${player.userName}]]*/ 'default';
+        alert("You are about to send a request to this teams manager which can not be reversed.\nClick Ok to proceed.");
+
+    /*]]>*/
+
+        $.ajax({
+          url: "/some-action2",
+          type: "POST",
+          data: { firstName: name } 
+        });
+        return;
+      } // function sendAction
+      
+      /**
+       * Init operations.
+       */
+      $(document).ready(function() {
+    	
+        // Bind the on-click event for the button element.
+        $("#do-some-action2").on("click", sendAction);
+        
+      });
+
+    </script>
 
 </body>
 </html>
