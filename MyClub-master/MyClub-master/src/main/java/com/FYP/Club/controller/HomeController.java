@@ -1,6 +1,9 @@
 package com.FYP.Club.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +11,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +25,14 @@ import javax.validation.Valid;
 import com.FYP.Club.Notification;
 import com.FYP.Club.services.NotificationService;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection.Response;
 import org.jsoup.nodes.Document;
@@ -51,6 +63,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -59,6 +72,7 @@ import com.FYP.Club.model.Inbox;
 import com.FYP.Club.model.League;
 import com.FYP.Club.model.Outbox;
 import com.FYP.Club.model.PlayerInfo;
+import com.FYP.Club.model.PlayerStat;
 import com.FYP.Club.model.Role;
 import com.FYP.Club.model.Team;
 import com.FYP.Club.model.UserLogin;
@@ -77,6 +91,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Controller
 public class HomeController {
  
+	private String fileLocation;
 
 	 boolean ok;
     @Autowired
@@ -761,14 +776,14 @@ public class HomeController {
 				
 			}
 	  
+
+	  
 	  @RequestMapping(value="/registerteam", method=RequestMethod.GET)
 		public String index(Team team) {
 			return "teamindex";
 			
 		}
-	  
-//	
-	
+
 	
 		//testing out ajax on registering a team
 		
@@ -1138,6 +1153,201 @@ public class HomeController {
 	
 		return result;
 		
+	}
+	
+	@RequestMapping(value="/uploadStats", method=RequestMethod.GET)
+	public String uploadStats(Model model) 
+	{
+	  
+	
+		
+		return "stats";
+	}
+	
+	@RequestMapping(value="/viewStats", method=RequestMethod.GET)
+	public String viewStats(Model model) 
+	{
+	  
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+
+		   model.addAttribute("user", user);
+
+		
+		return "Allstats";
+	}
+	
+	
+	@RequestMapping(value="/uploadStats", method=RequestMethod.POST)
+	public String uploadStats2(Model model, @RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws EncryptedDocumentException, InvalidFormatException, IOException
+	{
+		int carries = 0;
+		double carriesScore = 0;
+		int ballPlacement = 0;
+		double ballPlacementScore = 0;
+		int tackle = 0;
+		double tackleScore = 0;
+		int ruck = 0;
+		double ruckScore = 0;
+		int triesScored = 0;
+		
+		
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+		
+	  	PlayerStat playerStat = new PlayerStat();
+	 	playerStat.setSeason("17/18");
+	 	
+	      
+	      
+	      ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
+		   
+		  for (Team t : teams)
+		  {
+			  for(UserLogin ul : t.getUserLogins())
+			  {
+				  if(ul.getUserName().equals(email))
+				  {
+					  playerStat.setClub(t.getTeamName());
+					  break;
+				  }
+			  }
+		  }
+	      
+		  
+		 InputStream in = file.getInputStream();
+		    File currDir = new File(".");
+		    String path = currDir.getAbsolutePath();
+		    fileLocation = path.substring(0, path.length() - 1) + file.getOriginalFilename();
+		    FileOutputStream f = new FileOutputStream(fileLocation);
+		    int ch = 0;
+		    while ((ch = in.read()) != -1) {
+		        f.write(ch);
+		    }
+		    f.flush();
+		    f.close();
+		    
+
+		    
+		 final String SAMPLE_XLSX_FILE_PATH = ("Z:/4th & Final/Sem 1/FYP/Excel/") + file.getOriginalFilename();
+
+		 
+		 
+		 
+		    model.addAttribute("message", "File: " + file.getOriginalFilename() 
+		    				+ " has been uploaded successfully!");
+	   
+			
+	        Workbook workbook = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
+
+	        Sheet sheet = workbook.getSheetAt(0);
+
+			
+			DataFormatter dataFormatter = new DataFormatter();
+
+	        System.out.println("\n\nIterating over Rows and Columns using Iterator\n");
+	        Iterator<Row> rowIterator = sheet.rowIterator();
+	        while (rowIterator.hasNext()) {
+	            Row row = rowIterator.next();
+
+	            // Now let's iterate over the columns of the current row
+	            Iterator<Cell> cellIterator = row.cellIterator();
+
+	            while (cellIterator.hasNext()) {
+	   
+	            	
+	                Cell cell = cellIterator.next();
+	                String cellValue = dataFormatter.formatCellValue(cell);
+	               
+	                if (cellValue.equals("Tackle"))
+	                {
+	                	tackle = tackle+1;
+//	                	System.out.println(cellValue);
+	                    Cell cell2 = cellIterator.next();
+	                    String cellValue2 = dataFormatter.formatCellValue(cell2);
+	                    
+	                    tackleScore = tackleScore + Integer.parseInt(cellValue2); 
+//	                	System.out.println("Value: " + cellValue2);	
+	                }
+	                if (cellValue.equals("Carries"))
+	                {
+//	                	System.out.println(cellValue);
+	                	carries = carries+1;
+	                    Cell cell2 = cellIterator.next();
+	                    String cellValue2 = dataFormatter.formatCellValue(cell2);
+	                    carriesScore = carriesScore + Integer.parseInt(cellValue2); 
+                    
+//	                	System.out.println("Value: " + cellValue2);	
+	                }
+	                if (cellValue.equals("Try"))
+	                {
+	                	triesScored = triesScored+1;
+//	                	System.out.println(cellValue);
+	                    Cell cell2 = cellIterator.next();
+	                    String cellValue2 = dataFormatter.formatCellValue(cell2);
+//	                	System.out.println("Value: " + cellValue2);	
+	                }
+	                if (cellValue.equals("Ball Placement"))
+	                {
+	                	ballPlacement = ballPlacement+1;
+//	                	System.out.println(cellValue);
+	                    Cell cell2 = cellIterator.next();
+	                    String cellValue2 = dataFormatter.formatCellValue(cell2);
+	                    ballPlacementScore = ballPlacementScore + Integer.parseInt(cellValue2);
+//	                	System.out.println("Value: " + cellValue2);	
+	                }
+	                if (cellValue.equals("Ruck"))
+	                {
+//	                	System.out.println(cellValue);
+	                	ruck = ruck+1;
+	                    Cell cell2 = cellIterator.next();
+	                    String cellValue2 = dataFormatter.formatCellValue(cell2);
+	                    
+	                    ruckScore = ruckScore + Integer.parseInt(cellValue2);
+//	                	System.out.println("Value: " + cellValue2);	
+	                }
+	                if (cellValue.equals("Lineout"))
+	                {
+	            
+//	                	System.out.println(cellValue);
+	                    Cell cell2 = cellIterator.next();
+	                    String cellValue2 = dataFormatter.formatCellValue(cell2);
+//	                	System.out.println("Value: " + cellValue2);	
+	                }
+	               
+	            }
+	           
+	        }
+//        	System.out.println("\ncarries: " + carries);	
+//        	System.out.println("\ncarriesAverage: " + carriesScore/carries);	
+//        	System.out.println("\nballPlacement: " + ballPlacement);	
+//        	System.out.println("\nballPlacementScore: " + ballPlacementScore/ballPlacement);	
+//        	System.out.println("\ntackle: " + tackle);	
+//        	System.out.println("\ntackleScore: " + tackleScore/tackle);
+//        	System.out.println("\nruck: " + ruck);	
+//        	System.out.println("\nruck Score: " +  ruckScore/ruck);	
+//        	System.out.println("\ntriesScored: " + triesScored);	
+
+        	playerStat.setCarries(carries);
+        	playerStat.setCarriesScore(carriesScore/carries);
+        	playerStat.setBallPlacement(ballPlacement);
+        	playerStat.setBallPlacementScore(ballPlacementScore/ballPlacement);
+        	playerStat.setTackle(tackle);
+        	playerStat.setTackleScore(tackleScore/tackle);
+    	    playerStat.setRuck(ruck);
+    	    playerStat.setRuckScore(ruckScore/ruck);
+    		playerStat.setTriesScored(triesScored);
+    	
+    		user.addPlayerStat(playerStat);
+    	
+    		userRepository.save(user);
+	
+		return "stats";
 	}
 	
 	@RequestMapping(value="/freePositions", method=RequestMethod.GET)

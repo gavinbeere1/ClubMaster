@@ -8,4 +8,6 @@ import com.FYP.Club.model.Game;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
+	Game findByFinalScore(String v);
+
 }

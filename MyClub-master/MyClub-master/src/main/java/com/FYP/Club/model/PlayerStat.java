@@ -9,10 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-//@NamedQueries( {
-//	@NamedQuery(name = "PlayerStats.findAll", query = "select o from PlayerStats o"),
-//	@NamedQuery(name = "PlayerStats.findById", query = "select o from PlayerStats o where o.id=:id"),
-//})
+
 
 
 @Entity
@@ -20,29 +17,138 @@ public class PlayerStat {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int playerStatId;
+	private Long playerSeasonStatId;
+	private int carries;
+	private double carriesScore;
+	private int ballPlacement;
+	private double ballPlacementScore;
+	private int tackle;
+	private double tackleScore;
+	private int ruck;
+	private double ruckScore;
 	private int triesScored;
-	private int gamesPlayed;
-	private int metresMade;
+	private String season;
+    private String club;
 	
 	public PlayerStat()
 	{
 		
 	}
 
-	public PlayerStat(int triesScored, int gamesPlayed, int metresMade) {
+
+
+	public PlayerStat(Long playerSeasonStatId, int carries, double carriesScore,
+			int ballPlacement, double ballPlacementScore, int tackle,
+			double tackleScore, int ruck, double ruckScore, int triesScored,
+			String season, String club) {
 		super();
+		this.playerSeasonStatId = playerSeasonStatId;
+		this.carries = carries;
+		this.carriesScore = carriesScore;
+		this.ballPlacement = ballPlacement;
+		this.ballPlacementScore = ballPlacementScore;
+		this.tackle = tackle;
+		this.tackleScore = tackleScore;
+		this.ruck = ruck;
+		this.ruckScore = ruckScore;
 		this.triesScored = triesScored;
-		this.gamesPlayed = gamesPlayed;
-		this.metresMade = metresMade;
+		this.season = season;
+		this.club = club;
 	}
 
-	public int getPlayerStatId() {
-		return playerStatId;
+
+
+	public double getCarriesScore() {
+		return carriesScore;
 	}
 
-	public void setPlayerStatId(int playerStatId) {
-		this.playerStatId = playerStatId;
+
+
+	public void setCarriesScore(double carriesScore) {
+		this.carriesScore = carriesScore;
+	}
+
+
+
+	public int getBallPlacement() {
+		return ballPlacement;
+	}
+
+
+
+	public void setBallPlacement(int ballPlacement) {
+		this.ballPlacement = ballPlacement;
+	}
+
+
+
+	public double getBallPlacementScore() {
+		return ballPlacementScore;
+	}
+
+
+
+	public void setBallPlacementScore(double ballPlacementScore) {
+		this.ballPlacementScore = ballPlacementScore;
+	}
+
+
+
+	public double getTackleScore() {
+		return tackleScore;
+	}
+
+
+
+	public void setTackleScore(double tackleScore) {
+		this.tackleScore = tackleScore;
+	}
+
+
+
+	public double getRuckScore() {
+		return ruckScore;
+	}
+
+
+
+	public void setRuckScore(double ruckScore) {
+		this.ruckScore = ruckScore;
+	}
+
+
+
+	public Long getPlayerSeasonStatId() {
+		return playerSeasonStatId;
+	}
+
+	public void setPlayerSeasonStatId(Long playerSeasonStatId) {
+		this.playerSeasonStatId = playerSeasonStatId;
+	}
+
+	public int getCarries() {
+		return carries;
+	}
+
+	public void setCarries(int carries) {
+		this.carries = carries;
+	}
+
+
+	public int getTackle() {
+		return tackle;
+	}
+
+	public void setTackle(int tackle) {
+		this.tackle = tackle;
+	}
+
+	public int getRuck() {
+		return ruck;
+	}
+
+	public void setRuck(int ruck) {
+		this.ruck = ruck;
 	}
 
 	public int getTriesScored() {
@@ -53,21 +159,22 @@ public class PlayerStat {
 		this.triesScored = triesScored;
 	}
 
-	public int getGamesPlayed() {
-		return gamesPlayed;
+	public String getSeason() {
+		return season;
 	}
 
-	public void setGamesPlayed(int gamesPlayed) {
-		this.gamesPlayed = gamesPlayed;
+	public void setSeason(String season) {
+		this.season = season;
 	}
 
-	public int getMetresMade() {
-		return metresMade;
+	public String getClub() {
+		return club;
 	}
 
-	public void setMetresMade(int metresMade) {
-		this.metresMade = metresMade;
+	public void setClub(String club) {
+		this.club = club;
 	}
+	
 	
 	
 	

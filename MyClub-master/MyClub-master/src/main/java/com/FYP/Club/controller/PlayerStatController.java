@@ -39,21 +39,21 @@ public class PlayerStatController {
         return ResponseEntity.ok().body(playerStat);
     }
 
-    // Update a PlayerStat
-    @PutMapping("/playerStats/{id}")
-    public ResponseEntity<PlayerStat> updatePlayerStat(@PathVariable(value = "id") Long playerStatId, 
-                                           @Valid @RequestBody PlayerStat playerStatDetails) {
-        PlayerStat playerStat = playerStatRepository.findOne(playerStatId);
-        if(playerStat == null) {
-            return ResponseEntity.notFound().build();
-        }
-      playerStat.setTriesScored(playerStatDetails.getTriesScored());
-      playerStat.setGamesPlayed(playerStatDetails.getGamesPlayed());
-      playerStat.setMetresMade(playerStatDetails.getMetresMade());
-
-        PlayerStat updatedPlayerStat = playerStatRepository.save(playerStat);
-        return ResponseEntity.ok(updatedPlayerStat);
-    }
+//    // Update a PlayerStat
+//    @PutMapping("/playerStats/{id}")
+//    public ResponseEntity<PlayerStat> updatePlayerStat(@PathVariable(value = "id") Long playerStatId, 
+//                                           @Valid @RequestBody PlayerStat playerStatDetails) {
+//        PlayerStat playerStat = playerStatRepository.findOne(playerStatId);
+//        if(playerStat == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//      playerStat.setTriesScored(playerStatDetails.getTriesScored());
+//      playerStat.setGamesPlayed(playerStatDetails.getGamesPlayed());
+//      playerStat.setMetresMade(playerStatDetails.getMetresMade());
+//
+//        PlayerStat updatedPlayerStat = playerStatRepository.save(playerStat);
+//        return ResponseEntity.ok(updatedPlayerStat);
+//    }
 
     // Delete a Note	
     @DeleteMapping("/playerStats/{id}")

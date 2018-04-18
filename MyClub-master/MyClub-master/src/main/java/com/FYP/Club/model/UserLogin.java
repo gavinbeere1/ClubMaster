@@ -44,7 +44,7 @@ public class UserLogin {
 	public Set<Role> roles;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	 public Set<PlayerSeasonStat> playerStats;
+	 public Set<PlayerStat> playerStats;
 	
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
@@ -59,12 +59,20 @@ public class UserLogin {
 		
 	}
 
+
+
+	
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+
+
 	public UserLogin(Long id, String firstName, String lastName, Long phone,
 			String userName, String address, String password,
 			boolean userStatus, String userType, String position,
 			String imagePath, PlayerInfo playerinfo, Set<Role> roles,
-			Set<PlayerSeasonStat> playerStats, Set<Inbox> inbox,
-			Set<Outbox> outbox) {
+			Set<PlayerStat> playerStats, Set<Inbox> inbox, Set<Outbox> outbox) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -85,11 +93,27 @@ public class UserLogin {
 	}
 
 
-	
-	
-	public String getImagePath() {
-		return imagePath;
+	public void addPlayerStat(PlayerStat pStat)
+	{
+		playerStats.add(pStat);
 	}
+
+
+
+
+	public Set<PlayerStat> getPlayerStats() {
+		return playerStats;
+	}
+
+
+
+
+
+	public void setPlayerStats(Set<PlayerStat> playerStats) {
+		this.playerStats = playerStats;
+	}
+
+
 
 
 
@@ -227,21 +251,7 @@ public class UserLogin {
 	public void setUserStatus(boolean userStatus) {
 		this.userStatus = userStatus;
 	}
-
-	public Set<PlayerSeasonStat> getPlayerStats() {
-		return playerStats;
-	}
-
-	public void setPlayerStats(Set<PlayerSeasonStat> playerStats) {
-		this.playerStats = playerStats;
-	}
-
 	
-	public void addPlayerStat(PlayerSeasonStat pStat)
-	{
-		playerStats.add(pStat);
-	}
-
 
 	public String getPosition() {
 		return position;
