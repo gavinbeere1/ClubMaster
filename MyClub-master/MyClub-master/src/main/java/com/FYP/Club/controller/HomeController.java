@@ -553,7 +553,7 @@ public class HomeController {
 //					  t.addUserLogin(requestedUser);
 //						 teamRepository.save(t);
 						 
-						 
+					 
 						 break;
 				  }
 				  else
@@ -1374,7 +1374,7 @@ public class HomeController {
 		   return "welcome";
 	   }
 	   
-	   
+	   /////////////////Might need to duplicate method for player or user lol (works for player asking then accepting
 	   @RequestMapping(value="/approveAndJoin/{name:.+}", method=RequestMethod.GET)
 	   public String ApproveAndJoin(Model model, @PathVariable String name) throws NonUniqueResultException {
 		  
@@ -1389,13 +1389,13 @@ public class HomeController {
 		   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		   String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
+		  
 		   
-		   
-		   Outbox outbox = oR.findBySenderNameAndReceiverName(name, email);
+		 Outbox outbox = oR.findBySenderNameAndReceiverName(email, name);
 		   outbox.setStatus("Approved");
 		   oR.save(outbox);
 		   
-		   Inbox inbox = iR.findBySenderNameAndReceiverName(name, email);
+		   Inbox inbox = iR.findBySenderNameAndReceiverName(email, name);
 		   inbox.setStatus("Approved");
 		   iR.save(inbox);
 		   

@@ -48,14 +48,12 @@
          <p>Scores are between 1-3 (1 poor, 2 average, 3 excellent)</p>
      
     <h5>Game</h5>
-    <h5>Carries:<text th:text="${item?.carries}" /> </h5>
-    <h5>Score:<text th:text="${item?.carriesScore}" /> </h5>
-    <h5>Ball Placements:<text th:text="${item?.ballPlacement}" /> </h5>
-    <h5>Score:<text th:text="${item?.ballPlacementScore}" /> </h5>
-    <h5>Tackles:<text th:text="${item?.tackle}" /> </h5>
-     <h5>Score:<text th:text="${item?.tackleScore}" /> </h5>
-        <h5>Rucks:<text th:text="${item?.ruck}" /> </h5>
-        <h5>Score:<text th:text="${item?.ruckScore}" /> </h5>
+    <h5>Carries:<text th:text="${item?.carries}" /> Score:<text th:text="${item?.carriesScore}" /> </h5>
+
+    <h5>Ball Placements:<text th:text="${item?.ballPlacement}" /> Score:<text th:text="${item?.ballPlacementScore}" /> </h5>
+    <h5>Tackles:<text th:text="${item?.tackle}" />   Score:<text th:text="${item?.tackleScore}" />  </h5>
+   
+        <h5>Rucks:<text th:text="${item?.ruck}" />   Score:<text th:text="${item?.ruckScore}" /> </h5>
             <h5>Tries:<text th:text="${item?.triesScored}" /> </h5>
     
     </th:block>

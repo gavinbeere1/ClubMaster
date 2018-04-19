@@ -48,7 +48,7 @@
 			<table id="customerTable" class="table table-bordered table-hover table-responsive">
 				<thead>
 					<tr>
-						<th>Id</th>
+						<th></th>
 						<th>Name</th>
 						<th>Address</th>
 						<th>Level</th>					</tr>
@@ -57,7 +57,8 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
+	</div> 
+	
  <script type="text/javascript">
 
   $(document).ready(function() {
@@ -70,7 +71,7 @@
 				$.each(result, function(i, team){
 					
 					var customerRow = ' <tr>' +
-										'<td>' + team.id + '</td>' +
+					'<td><img src="/images/' + team.imagePath + '"/></td>' +
 										'<td>' + team.teamName.toUpperCase() + '</td>' +
 										'<td>' + team.teamAddress + '</td>' +
 										'<td>' + team.level + '</td>' +

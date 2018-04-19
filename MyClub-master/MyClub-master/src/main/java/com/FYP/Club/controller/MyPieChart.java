@@ -1,6 +1,7 @@
 package com.FYP.Club.controller;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -117,6 +120,9 @@ public class MyPieChart {
 		  return dpd;
 	  }
 	  
+	  
+	  
+	  
 	  private JFreeChart createChart(PieDataset pdSet, String chartTitle)
 	  {
 		  JFreeChart chart = ChartFactory.createPieChart3D(chartTitle, pdSet, true, true, false);
@@ -124,6 +130,9 @@ public class MyPieChart {
 		  plot.setStartAngle(290);
 		  plot.setDirection(Rotation.CLOCKWISE);
 		  plot.setForegroundAlpha(0.9f);
+		   PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator(
+		            "{0}: {1} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
+		        plot.setLabelGenerator(gen);
 		  return chart;
 		  
 	  }
