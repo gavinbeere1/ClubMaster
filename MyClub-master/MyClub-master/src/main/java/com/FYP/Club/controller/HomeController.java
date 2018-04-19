@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import javax.persistence.NonUniqueResultException;
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.FYP.Club.Notification;
@@ -33,6 +34,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import org.jfree.util.Rotation;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection.Response;
 import org.jsoup.nodes.Document;
@@ -99,7 +107,7 @@ public class HomeController {
 	 
     @Autowired 
     OutboxRepository oR;    
-    
+   
     @Autowired
     InboxRepository iR;
     
@@ -119,11 +127,14 @@ public class HomeController {
 	  @Autowired
 			LeagueRepository leagueRepository;
 	 
+
+
+	  
 	  @RequestMapping(value = "/test")
 	    public String index() {
 	        return "test";
 	    }
-	 
+	
 	  //websocket
 
 	  @Autowired
