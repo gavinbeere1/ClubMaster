@@ -737,7 +737,7 @@ public class HomeController {
 		  
    }
    
-   
+  
    
 //Unused method below (User has to apply now before joining a team) only for manager
    @RequestMapping(value = "/jointeam/{id}", method={RequestMethod.POST, RequestMethod.GET})
