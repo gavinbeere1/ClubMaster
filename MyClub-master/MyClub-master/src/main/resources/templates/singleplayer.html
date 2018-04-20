@@ -55,7 +55,8 @@
  	
  	       	<a onclick="ConfirmAlert();" th:href="@{/acceptplayer/{id}(id=${player.userName})}" ><span>Accept Player</span></a>
  	      <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
- 	
+ 	<a style="color:blue" th:href="@{/charts/piechart/{id}(id=${player.userName})}">View Total Game Chart!</a>
+	   <br />   
 	   <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
 	   
 </center>	   

@@ -84,6 +84,7 @@ import com.FYP.Club.model.PlayerStat;
 import com.FYP.Club.model.Role;
 import com.FYP.Club.model.Team;
 import com.FYP.Club.model.UserLogin;
+import com.FYP.Club.model.WonHomeGames;
 import com.FYP.Club.repository.GameRepository;
 import com.FYP.Club.repository.InboxRepository;
 import com.FYP.Club.repository.LeagueRepository;
@@ -158,7 +159,7 @@ public class HomeController {
 
 //	      UserLogin user = userRepository.findByUserName(email);
 	      
-	      
+	      Team team = new Team();
 	      ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
 		   
 		  for (Team t : teams)
@@ -167,14 +168,116 @@ public class HomeController {
 			  {
 				  if(ul.getUserName().equals(email))
 				  {
+					  team = t;
 				      model.addAttribute("myteam", t); 
 				      break;
 
 				  }
 			  }
 		  }
-			
-		     return "myteam";
+		  
+		  /////Show teams home games
+		  ArrayList<Game> Hgames = gameRepository.findByHomeSideId(team.getId());
+		  ArrayList<WonHomeGames> WHGames = new ArrayList<WonHomeGames>();
+		  ArrayList<WonHomeGames> FHGames = new ArrayList<WonHomeGames>();
+
+		  
+		  
+		  
+		  WonHomeGames WonHomeGames;
+		  WonHomeGames FutureHomeGames;
+		  
+		for (Game g : Hgames)
+		  {
+			  String result = g.getFinalScore();
+			  result.trim();
+			  
+			  if (!result.equals("v"))
+			  {
+			  ///result2 = home side
+			  String[] output = result.split("-");
+			  int result1 = Integer.parseInt(output[0].trim());
+			  int result2 = Integer.parseInt(output[1].trim());
+
+				if (result1 < result2)
+				{
+					
+					WonHomeGames = new WonHomeGames();
+					WonHomeGames.setDatePlayed(g.getDatePlayed());
+					WonHomeGames.setHomeScore(result2);
+					WonHomeGames.setAwayScore(result1);
+					WonHomeGames.setHomeTeam(g.getHomeSide().getTeamName());
+					WonHomeGames.setAwayTeam(g.getAwaySide().getTeamName());
+					WHGames.add(WonHomeGames);  
+				}
+			  }
+			  else
+			  {
+				  FutureHomeGames = new WonHomeGames();
+				  FutureHomeGames.setDatePlayed(g.getDatePlayed());
+				  FutureHomeGames.setAwayTeam(g.getAwaySide().getTeamName());
+				  FHGames.add(FutureHomeGames);
+				  
+			  }
+		  }
+		
+		
+		//////////////////////////////////////////////////////////////////////////////
+		  ArrayList<Game> Agames = gameRepository.findByAwaySideId(team.getId());
+		  ArrayList<WonHomeGames> WAGames = new ArrayList<WonHomeGames>();
+		  ArrayList<WonHomeGames> FAGames = new ArrayList<WonHomeGames>();
+
+		  
+		  WonHomeGames WonAwayGames;
+		  WonHomeGames FutureAwayGames;
+		  
+		for (Game g : Agames)
+		  {
+			  String result = g.getFinalScore();
+			  result.trim();
+			  
+			  if (!result.equals("v"))
+			  {
+			  ///result2 = home side
+			  String[] output = result.split("-");
+			  int result1 = Integer.parseInt(output[0].trim());
+			  int result2 = Integer.parseInt(output[1].trim());
+
+				
+					
+					WonAwayGames = new WonHomeGames();
+					WonAwayGames.setDatePlayed(g.getDatePlayed());
+					WonAwayGames.setHomeScore(result2);
+					WonAwayGames.setAwayScore(result1);
+					WonAwayGames.setHomeTeam(g.getHomeSide().getTeamName());
+					WonAwayGames.setAwayTeam(g.getAwaySide().getTeamName());
+					WAGames.add(WonAwayGames);  
+				
+			  }
+			  else
+			  {
+				  FutureAwayGames = new WonHomeGames();
+				  FutureAwayGames.setDatePlayed(g.getDatePlayed());
+				  FutureAwayGames.setHomeTeam(g.getHomeSide().getTeamName());
+				  FAGames.add(FutureAwayGames);
+				  
+			  }
+		  }
+		  
+		  model.addAttribute("futureAgames", FAGames);
+		  model.addAttribute("wonAgames", WAGames); 
+		
+		  model.addAttribute("futureHgames", FHGames);
+		  model.addAttribute("wonHgames", WHGames); 
+		  
+//		  ArrayList<Game> Agames = gameRepository.findByAwaySideId(team.getId());
+//		  for (Game g : Agames)
+//		  {
+//			  System.out.println(g.getFinalScore());
+//		  }
+		  
+		    
+		  return "myteam";
 	  }
 	  //Since I am displaying all in a table anyways, maybe use a search bar implementing JS to search and display a team
 	  //https://codepen.io/adobewordpress/pen/gbewLV
@@ -511,7 +614,6 @@ public class HomeController {
 		  {
 			  ok = true;
 			  System.out.println("boolean is true, user will be accepted");
-
 		  }
 	  }
 	  

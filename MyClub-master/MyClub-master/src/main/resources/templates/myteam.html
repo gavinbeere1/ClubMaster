@@ -40,10 +40,98 @@
 
 <div>
 <center>
-	<h3>Team</h3>
+
+
+	<h3> <img th:src="@{${'/images/' + myteam?.imagePath}}"  /></h3>
 	<h4>Name: <text th:text="${myteam?.teamName}" /> </h4>
 	<h4>Address: <text th:text="${myteam?.teamAddress}" /> </h4>
 	<br /> 
+	
+	
+	<table class = "table">
+ 	
+ 	<tr>
+ 	<h3>Home Games</h3>
+ 	<th> Date</th>
+ 	<th> Team </th>
+ 	<th> Our Score </th>
+ 	<th></th>
+ 	<th> Their Score </th>
+
+ 	</tr>
+ 	
+ 			 
+ 	
+ 	<tr th:each="games : ${wonHgames}">
+ 	<td th:text="${games.datePlayed}"></td>
+ 	<td th:text="${games.AwayTeam}"></td>
+ 	<td th:text="${games.HomeScore}"></td>
+ 	<td> vs </td>
+ 	<td th:text="${games.AwayScore}"></td>
+ 	</tr>
+ 	</table>
+
+	<table class = "table">
+ 	
+ 	<tr>
+ 	<h3>Upcoming Home Games</h3>
+ 	<th> Date</th>
+ 	<th> VS </th>
+ 	</tr>
+
+ 	<tr th:each="games : ${futureHgames}">
+ 	<td th:text="${games.datePlayed}"></td>
+ 	<td th:text="${games.AwayTeam}"></td>
+
+ 	</tr>
+ 	</table>
+ 	
+ 	
+ 
+ 	
+ 	
+ 		<table class = "table">
+ 	
+ 	<tr>
+ 	<h3>Away Games</h3>
+ 	<th> Date</th>
+ 	<th> Team </th>
+ 	<th> Our Score </th>
+ 	<th></th>
+ 	<th> Their Score </th>
+
+ 	</tr>
+ 	
+ 			 
+ 	
+ 	<tr th:each="games : ${wonAgames}">
+ 	<td th:text="${games.datePlayed}"></td>
+ 	<td th:text="${games.HomeTeam}"></td>
+ 	<td th:text="${games.AwayScore}"></td>
+ 	<td> vs </td>
+ 	<td th:text="${games.HomeScore}"></td>
+ 	</tr>
+ 	</table>
+
+	<table class = "table">
+ 	
+ 	<tr>
+ 	<h3>Upcoming Away Games</h3>
+ 	<th> Date</th>
+ 	<th> VS </th>
+ 	</tr>
+
+ 	<tr th:each="games : ${futureAgames}">
+ 	<td th:text="${games.datePlayed}"></td>
+ 	<td th:text="${games.HomeTeam}"></td>
+
+ 	</tr>
+ 	</table>
+
+
+
+
+  <h2>Players</h2>
 	<ul>
     <th:block th:object="${myteam}" th:each="item : ${myteam?.userLogins}">
     <h5>-----------------------------------------------</h5>
@@ -54,8 +142,11 @@
     <h5>Type:<text th:text="${item?.userType}" /> </h5>
     <h5>Username:<text th:text="${item?.userName}" /> </h5>
     <h5>Position:<text th:text="${item?.playerinfo?.position}" /> </h5>
+    <a th:href="@{/viewplayer/{id}(id=${item?.id})}"><span>View Player</span></a>
+    
     
     </th:block>
+ 
     </ul>
  	
  	      <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

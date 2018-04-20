@@ -1,7 +1,9 @@
 package com.FYP.Club.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.text.DecimalFormat;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -40,7 +43,30 @@ public class MyPieChart {
 		UserLoginRepository userRepository;
 	
 	 
-	
+	 @RequestMapping(value = "/piechart/{id:.+}", method={RequestMethod.POST, RequestMethod.GET})
+	   public void AcceptPlayer(Principal principal, @PathVariable String id, HttpServletResponse response) throws ConcurrentModificationException{
+		 
+		 System.out.print(id);
+		 UserLogin user = userRepository.findByUserName(id);
+		 
+		 String userName = user.getUserName();
+		  response.setContentType("image/png");
+		  PieDataset pdSet = createDataSet2(userName);
+		  JFreeChart chart = createChart(pdSet, user.getFirstName() + " " + user.getLastName() + ": Total Games Break Down Chart");
+		  
+		  
+		  try
+		  {
+			  ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 750, 400);
+			  response.getOutputStream().close();
+		  }
+		  catch (IOException ex)
+		  {
+			  ex.printStackTrace();
+		  }
+		  
+		 
+	 }
      
      
 	  @RequestMapping(value = "/piechart", method=RequestMethod.GET)
@@ -87,6 +113,44 @@ public class MyPieChart {
 		     String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
 		     UserLogin user = userRepository.findByUserName(email);
+		  
+	      Set<PlayerStat> cueList = user.getPlayerStats();
+		  
+	      
+	      int ruck = 0;
+	      int carries = 0;
+	      int tackle =0;
+	      int tries = 0;
+	      int ballPlacement = 0;
+	      
+	      for (PlayerStat s: cueList) {
+	    	    
+	    	  ruck = ruck + s.getRuck();
+	    	  carries = carries + s.getCarries();
+	    	  tries = tries + s.getTriesScored();
+	    	  tackle = tackle + s.getTackle();
+	    	  ballPlacement = ballPlacement + s.getBallPlacement();
+
+	    	}
+	      int other = 100 - (ruck + carries + tackle + tries + ballPlacement);
+	      
+	      dpd.setValue("Rucks", ruck);
+	      dpd.setValue("Carries", carries);
+	      dpd.setValue("Tackles", tackle);
+	      dpd.setValue("Tries", tries);
+	      dpd.setValue("Ball Placement", ballPlacement);
+
+	      dpd.setValue("Other", other);
+	     
+
+		  return dpd;
+	  }
+	  private PieDataset createDataSet2(String userName)
+	  {
+		  DefaultPieDataset dpd = new DefaultPieDataset();
+		  
+		
+		     UserLogin user = userRepository.findByUserName(userName);
 		  
 	      Set<PlayerStat> cueList = user.getPlayerStats();
 		  

@@ -36,7 +36,10 @@
     <input id="do-some-action2" type="button" value="Invite Player To Join" />
 
  	
- 	             <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+ 	             <br />  
+ 	             
+ 	             <a style="color:blue" th:href="@{/charts/piechart/{id}(id=${player.userName})}">View Total Game Chart!</a>
+	   <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
  	
 	   <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
 	   
