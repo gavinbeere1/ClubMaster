@@ -844,7 +844,7 @@ public class HomeController {
 	   inbox.setViewed("Seen");
 	   ///
 	   iR.save(inbox);
-	   
+	  
 	   UserLogin player = userRepository.findByUserName(name);
 	
 	   if (player.getUserType().equals("Manager"))
