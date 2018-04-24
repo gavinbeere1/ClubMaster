@@ -10,78 +10,94 @@
   <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">MyClub</a>
+      <a class="navbar-brand" href="/">MyClub</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="/">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
+      <li class="active"><a href="/welcome">Home</a></li>
+
     </ul>
-    <form class="navbar-form navbar-left" action="/action_page.php">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search" name="search"></input>
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+   
   </div>
 </nav>
+ <style>
+  .bg-1 { 
+       background-color: #1abc9c; /* Green */
+        color: #ffffff;
+    }
+  </style>
  </head>
-  <p th:inline="text">
+   <p th:inline="text" >
       You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
-      (<a href="/logout">logout</a>)
-    </p>
+          <a href="/logout" class="btn btn-danger" role="button">Logout</a>
 
+    </p>
+       <div class="container-fluid bg-1 text-center" align="center">
+ 
+    <a> <img src="/images/logo.jpg"> </img></a>
+ </div>
 
 <body>
 
  
-<div>
-<center>
+
+	   <center> 
+ 
+
+	
 	<h3>Team</h3>
 	<img th:src="@{${'/images/' + team.imagePath}}"  />
-	<h4>Name: <text th:text="${team.teamName}" /> </h4>
-	<h4>Address: <text th:text="${team.teamAddress}" /> </h4>
-	<h4>Members:  </h4>
+	<h3>Name: <text th:text="${team.teamName}" /> </h3>
+	<h3>Address: <text th:text="${team.teamAddress}" /> </h3>
+	<h3>Members:  </h3>
 	
-	
-	<ul>
+	<div class="list-group">
+	<ul class="list-group-item">
     <th:block th:object="${team}" th:each="item : ${team.userLogins}">
         
         
-        <h5>ID:<text th:text="${item.id}" /> </h5>
-    
-    <h5>First Name:<text th:text="${item.firstName}" /> </h5>
-    <h5>Last Name:<text th:text="${item.lastName}" /> </h5>
-    <h5>Type:<text th:text="${item.userType}" /> </h5>
-    <h5>Username:<text th:text="${item.userName}" /> </h5>
-    <h5>Position:<text th:text="${item?.playerinfo?.position}" /> </h5>
-    <h5>---------------------------------------</h5>
+     
+    <li class="list-group-item">
+     
+     <span class="badge"><text th:text="${item?.playerinfo?.position}" /></span>
+     <br />
+     <img th:src="@{${'/images/' + item?.imagePath}}"  />
+         
+     
+    <h4>First Name:<text th:text="${item.firstName}" /> </h4>
+    <h4>Last Name:<text th:text="${item.lastName}" /> </h4>
+    <h4>Type:<text th:text="${item.userType}" /> </h4>
+    <h4>Username:<text th:text="${item.userName}" /> </h4>
+    <h4>Position:<text th:text="${item?.playerinfo?.position}" /> </h4>
+    <h4>Age: <text th:text="${item?.playerinfo?.age}" /> </h4>
+  <h4>Height: <text th:text="${item?.playerinfo?.height}" /> cm</h4>
+   <h4>Weight: <text th:text="${item?.playerinfo?.weight}" /> Kg</h4>
+         <a th:href="@{/viewplayer/{id}(id=${item?.id})}" class="btn btn-info" role="button">View Players Profile</a> 
+   
+</li>
     </th:block>
     </ul>
-    <br />
-     	<button onclick="initMap()">Show on Map</button>  
+    
+    </div>
     
     <br />
-     <br />
-    
-    <input id="do-some-action" type="button" value="Apply to this team" />
- 	
- 	      
- 	           <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
- 		   <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
- 	
-	   
+     <button onclick="initMap()"  class="btn btn-success">Show on Map</button> 
+		     <br />
+		      <br />
+	    <input id="do-some-action" type="button" value="Apply to this team" class="btn btn-danger"/>
 	    <br />
-	    <div id="map" style="width:400px;height:400px;"></div>
-	    
-	    
+	     <br />
+	     <div id="map" style="width:400px;height:400px;" ></div>
+
+
+
+	
 </center>	   
 	   
 	  
 
 
 	
-</div>
+
 
  <!-- Javascript functions -->
     <script th:inline="javascript">

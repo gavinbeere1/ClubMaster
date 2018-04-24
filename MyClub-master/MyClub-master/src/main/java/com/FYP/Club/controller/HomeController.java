@@ -263,7 +263,7 @@ public class HomeController {
 				  
 			  }
 		  }
-		  
+		
 		  model.addAttribute("futureAgames", FAGames);
 		  model.addAttribute("wonAgames", WAGames); 
 		
@@ -530,7 +530,7 @@ public class HomeController {
 	  
 	   
    @RequestMapping(value={"/welcome"})
-   public String welcome(){
+   public String welcome(Model model){
 	   
 	      Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
@@ -543,6 +543,7 @@ public class HomeController {
 			{
 				
 				
+	    	  	model.addAttribute("player", user);
 				result = ("welcome");
 				//do whats mentioned below for all the entities
 				//players result page should ask the player more questions (see the player model for these attributes, then save them to this "player" and point the player to the welcome page
@@ -550,7 +551,7 @@ public class HomeController {
 
 			if (user.getUserType().equals("Manager"))
 			{
-			
+				model.addAttribute("manager", user);
 				//here i will try and add a user role (admin) to the manager entity so they can login as admin
 				result = ("managerResult");
 			}
@@ -812,7 +813,6 @@ public class HomeController {
 		return cueList;
 	}
   
-
    @RequestMapping(value="/viewplayer/{id}", method=RequestMethod.GET)
    public String ViewPlayer(Model model, @PathVariable Long id) {
 	   
@@ -1828,7 +1828,7 @@ public class HomeController {
 	      UserLogin user = userRepository.findByUserName(email);
 	      
 	      String position = user.getPlayerinfo().getPosition();
-	      
+
 	      
 	     
 	      
@@ -1872,6 +1872,8 @@ public class HomeController {
 			  
 			  for(UserLogin ul : t.getUserLogins())
 			  {
+				  if (ul.getPlayerinfo() != null)
+				  {
 				  if(ul.getPlayerinfo().getPosition().equals("RightWing"))
 				  {
 				    wingers--;
@@ -1928,7 +1930,7 @@ public class HomeController {
 				  {
 					props--;
 				  }
-				  
+				  }
 			  }//end of loop searching through players on a team
 			  
 			  if (  fullback >= 0 && position.equals("FullBack") )

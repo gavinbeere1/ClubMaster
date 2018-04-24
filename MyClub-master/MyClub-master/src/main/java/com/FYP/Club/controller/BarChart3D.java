@@ -222,7 +222,7 @@ public class BarChart3D {
 	  {
 		  JFreeChart barchart = ChartFactory.createBarChart3D( 
 			         team.getTeamName() + " Win/Loss" ,  // chart title                   
-			         "X", "Points Difference", dpd ,         // data 
+			         "Teams", "Points Difference", dpd ,         // data 
 			         PlotOrientation.VERTICAL, true ,            // include legend                   
 			         true, 
 			         false);

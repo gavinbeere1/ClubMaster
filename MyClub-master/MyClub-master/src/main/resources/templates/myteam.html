@@ -10,27 +10,28 @@
   <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">MyClub</a>
+      <a class="navbar-brand" href="/">MyClub</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="/">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
+      <li class="active"><a href="/welcome">Home</a></li>
+
     </ul>
-    <form class="navbar-form navbar-left" action="/action_page.php">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search" name="search"></input>
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+   
   </div>
 </nav>
+ <style>
+  .bg-1 { 
+       background-color: #1abc9c; /* Green */
+        color: #ffffff;
+    }
+  </style>
  </head>
-  <p th:inline="text">
+   <p th:inline="text" >
       You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
-      (<a href="/logout">logout</a>)
+          <a href="/logout" class="btn btn-danger" role="button">Logout</a>
+
     </p>
- <div align="center">
+       <div class="container-fluid bg-1 text-center" align="center">
  
     <a> <img src="images/logo.jpg"> </img></a>
  </div>
@@ -46,9 +47,9 @@
 	<h4>Name: <text th:text="${myteam?.teamName}" /> </h4>
 	<h4>Address: <text th:text="${myteam?.teamAddress}" /> </h4>
 	<br /> 
+	  <a href="/chart/bar" class="btn btn-warning" role="button">View Home/Away Stat Chart</a> 
 	
-	 <a style="color:blue" th:href="@{/chart/bar}">View Win Loss Rates</a>
- 	      <br /> 
+
 	<table class = "table">
  	
  	<tr>
@@ -133,30 +134,40 @@
 
 
   <h2>Players</h2>
-	<ul>
+	<ul class="list-group">
     <th:block th:object="${myteam}" th:each="item : ${myteam?.userLogins}">
-    <h5>-----------------------------------------------</h5>
-        <h5>ID:<text th:text="${item?.id}" /> </h5>
+ 
+     <!--    <h5>ID:<text th:text="${item?.id}" /> </h5> -->
+    <li class="list-group-item">
     
+    <span class="badge"><text th:text="${item?.playerinfo?.position}" /></span>
+    <br />
+    <img th:src="@{${'/images/' + item?.imagePath }}"  />
+    <h5>Position:<text th:text="${item?.playerinfo?.position}" /></h5>
     <h5>First Name:<text th:text="${item?.firstName}" /> </h5>
     <h5>Last Name:<text th:text="${item?.lastName}" /> </h5>
     <h5>Type:<text th:text="${item?.userType}" /> </h5>
     <h5>Username:<text th:text="${item?.userName}" /> </h5>
-    <h5>Position:<text th:text="${item?.playerinfo?.position}" /> </h5>
-    <a th:href="@{/viewplayer/{id}(id=${item?.id})}"><span>View Player</span></a>
     
+ 
+<!--     <a colour="red" th:href="@{/viewplayer/{id}(id=${item?.id})}">View Player</a>
+ -->      <a th:href="@{/viewplayer/{id}(id=${item?.id})}" class="btn btn-info" role="button">View Players Profile</a> 
     
+    </li>
     </th:block>
  
     </ul>
  	    <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
  	
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+<!-- 	        <ul class="list-group">
+  <li class="list-group-item">New <span class="badge">12</span></li>
+  <li class="list-group-item">Deleted <span class="badge">5</span></li> 
+  <li class="list-group-item">Warnings <span class="badge">3</span></li> 
+</ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+ 	 -->
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
  	
-	   <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
-	   <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
- 	
-	   <a style="color:blue" th:if="${myteam != null}" th:href="@{/leaveteam/{id}(id=${myteam?.id})}">Leave Team?!</a>
+	   <a style="color:red" th:if="${myteam != null}" th:href="@{/leaveteam/{id}(id=${myteam?.id})}">Leave Team?!</a>
 
 </center>	   	
 </div>

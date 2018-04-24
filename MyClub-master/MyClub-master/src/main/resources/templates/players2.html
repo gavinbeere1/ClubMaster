@@ -12,29 +12,30 @@
   <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">MyClub</a>
+      <a class="navbar-brand" href="/">MyClub</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="/">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
+      <li class="active"><a href="/welcome">Home</a></li>
+
     </ul>
-    <form class="navbar-form navbar-left" action="/action_page.php">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search" name="search"></input>
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+   
   </div>
 </nav>
+ <style>
+  .bg-1 { 
+       background-color: #1abc9c; /* Green */
+        color: #ffffff;
+    }
+  </style>
  </head>
-  <p th:inline="text">
+   <p th:inline="text" >
       You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
-      (<a href="/logout">logout</a>)
+          <a href="/logout" class="btn btn-danger" role="button">Logout</a>
+
     </p>
-     <div align="center">
+       <div class="container-fluid bg-1 text-center" align="center">
  
-    <a> <img src="images/logo.jpg"> </img></a>
+    <a> <img src="/images/logo.jpg"> </img></a>
  </div>
  
 <body>
@@ -50,11 +51,16 @@
 				<thead>
 					<tr>
 						
-						<th>Id</th>
+						<th></th>
 						<th>Name</th>
 						<th>Surname</th>
 						<th>Username</th>	
 							 	<th>Position</th> 
+								 	<th>Age</th> 
+							 	<th>Height</th> 
+							 								 	<th>Weight</th> 
+							 	
+							 	
 										
 					</tr>
 				</thead>
@@ -82,9 +88,13 @@
 										'<td>' + userLogin.lastName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.userName + '</td>' +
   										'<td>' + userLogin.playerinfo.position + '</td>' +
-  									
+  										'<td>' + userLogin.playerinfo.age + '</td>' +
+  										'<td>' + userLogin.playerinfo.height + '</td>' +
+  										'<td>' + userLogin.playerinfo.weight + '</td>' +
+  										
+  										
 															
-										'<td><a href="/viewplayer/'+userLogin.id+'">View Player</a></td>' +	 '</tr>';
+										'<td><a class="btn btn-info" role="button" href="/viewplayer/'+userLogin.id+'">View Player</a></td>' +	 '</tr>';
 									
 					$('#customerTable tbody').append(customerRow);
 				

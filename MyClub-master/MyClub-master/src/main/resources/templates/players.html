@@ -7,32 +7,35 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
  
-  <nav class="navbar navbar-inverse">
+ <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">MyClub</a>
+      <a class="navbar-brand" href="/">MyClub</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="/">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
+      <li class="active"><a href="/welcome">Home</a></li>
+
     </ul>
-    <form class="navbar-form navbar-left" action="/action_page.php">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search" name="search"></input>
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+   
   </div>
 </nav>
+ <style>
+  .bg-1 { 
+       background-color: #1abc9c; /* Green */
+        color: #ffffff;
+    }
+  </style>
  </head>
-  <p th:inline="text">
+   <p th:inline="text" >
       You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
-      (<a href="/logout">logout</a>)
+          <a href="/logout" class="btn btn-danger" role="button">Logout</a>
+
     </p>
-<form th:action="@{/logout}" method="post">
-         <input type="submit" value="Sign Out"/>
-     </form>
+       <div class="container-fluid bg-1 text-center" align="center">
+ 
+    <a> <img src="/images/logo.jpg"> </img></a>
+ </div>
+ 
 <center>
 <body>
 
@@ -46,12 +49,15 @@
  	
  	<tr>
  	<th></th>
- 	<th> Id </th>
+ 
  	<th> First Name </th>
  	<th> Last Name </th>
  	<th> Email </th>
  	<th> User Type</th>
- 	
+ 	<th> Position</th>
+ 	<th> Age</th>
+ 	<th> Weight</th>
+ 	<th> Height</th>
  	
  	</tr>
  	
@@ -59,20 +65,26 @@
  	
  	<tr th:each="userLogin : ${players}">
  	<td><img th:src="@{${'/images/' + userLogin.imagePath}}"  /></td>
- 	<td th:text="${userLogin.id}"></td>
+ 
  	<td th:text="${userLogin.firstName}"></td>
  	<td th:text="${userLogin.lastName}"></td>
  	<td th:text="${userLogin.userName}"></td>
  
  	 	
  
- 	<td><div><button onclick="myFunction()">Test JavaScript</button>  </div></td>
+ 	<td th:text="${userLogin?.playerinfo?.position}"></td>
+ 	 	<td th:text="${userLogin?.playerinfo?.age}"></td>
+ 	
+ 	 	<td th:text="${userLogin?.playerinfo?.weight}"></td>
+ 	 	 	<td th:text="${userLogin?.playerinfo?.height}"></td>
+ 	 	
+ 	
  	<td>
- 	<a th:href="@{/deleteplayer/{id}(id=${userLogin.id})}"><span>Delet‌​e</span></a>
+ 	<a class="btn btn-danger" role="button"  th:href="@{/deleteplayer/{id}(id=${userLogin.id})}"><span>Delet‌​e</span></a>
  	</td>
  	
  	<td>
- 	<a th:href="@{/viewplayer/{id}(id=${userLogin.id})}"><span>View Player</span></a>
+ 	<a class="btn btn-info" role="button"  th:href="@{/viewplayer/{id}(id=${userLogin.id})}"><span>View Player</span></a>
  	</td>
  	
  	   
@@ -84,7 +96,7 @@
 
  	
  	</table>
- <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
+ <a class="btn btn-info" role="button"  style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
  <p id="demo"></p>
  
   <div id="map" style="width:400px;height:400px;"></div>
