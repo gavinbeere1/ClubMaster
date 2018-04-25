@@ -42,12 +42,52 @@
 <div>
 <center>
 
-
 	<h3> <img th:src="@{${'/images/' + myteam?.imagePath}}"  /></h3>
 	<h4>Name: <text th:text="${myteam?.teamName}" /> </h4>
 	<h4>Address: <text th:text="${myteam?.teamAddress}" /> </h4>
 	<br /> 
 	  <a href="/chart/bar" class="btn btn-warning" role="button">View Home/Away Stat Chart</a> 
+	  <br />
+	  <br />
+
+<table class = "table">
+
+<tr>
+
+<td><h5>Name</h5></td>
+<td><h5>Position</h5></td>
+<td><h5>Played</h5></td>
+<td><h5>Won</h5></td>
+<td><h5>Draw</h5></td>
+<td><h5>Lost</h5></td>
+<td><h5>Points For</h5></td>
+<td><h5>Points Against</h5></td>
+<td><h5>Points Difference</h5></td>
+<td><h5>Winning Bonus Points</h5></td>
+<td><h5>Losing Bonus Points</h5></td>
+<td><h5>Points</h5></td>
+
+</tr>
+<tr th:each="league : ${league}" >
+<!-- <tr bgcolor="#FF0000" th:if="${#strings.startsWith(league?.name, myteam?.teamName) }">
+ --> <td bgcolor="#FF0000" th:unless="${!#strings.startsWith(league?.name, myteam?.teamName) }"><text th:text="${league?.name}" /></td>
+ <td> <text th:text="${league?.pos}" /></td>
+ <td> <text th:text="${league?.played}" /></td>
+ <td> <text th:text="${league?.won}" /></td>
+ <td> <text th:text="${league?.drew}" /></td>
+ <td> <text th:text="${league?.lost}" /></td>
+ <td> <text th:text="${league?.pointsFor}" /></td>
+ <td>  <text th:text="${league?.pointsAgainst}" /></td>
+  <td> <text th:text="${league?.pointsDifference}" /></td>
+  <td>  <text th:text="${league?.Tb}" /></td>
+  <td> <text th:text="${league?.lb}" /></td>
+  <td> <text th:text="${league?.pts}" /></td>
+ </tr>
+<!--  </tr>
+ --> </table>
+
+
+
 	
 
 	<table class = "table">
@@ -67,9 +107,10 @@
  	<tr th:each="games : ${wonHgames}">
  	<td th:text="${games.datePlayed}"></td>
  	<td th:text="${games.AwayTeam}"></td>
- 	<td th:text="${games.HomeScore}"></td>
- 	<td> vs </td>
  	<td th:text="${games.AwayScore}"></td>
+ 	
+ 	<td> vs </td>
+ 	<td th:text="${games.HomeScore}"></td>
  	</tr>
  	</table>
 
@@ -109,9 +150,10 @@
  	<tr th:each="games : ${wonAgames}">
  	<td th:text="${games.datePlayed}"></td>
  	<td th:text="${games.HomeTeam}"></td>
- 	<td th:text="${games.AwayScore}"></td>
- 	<td> vs </td>
  	<td th:text="${games.HomeScore}"></td>
+ 	<td> vs </td>
+ 	<td th:text="${games.AwayScore}"></td>
+ 	
  	</tr>
  	</table>
 

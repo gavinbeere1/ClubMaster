@@ -139,7 +139,7 @@ public class BarChart3D {
 					if (result1 < result2)
 					{
 						result2 = result2 - result1;
-						dpd.addValue(result2,"Lost Away" , g.getHomeSide().getTeamName());
+						dpd.addValue(result2,"Won Away" , g.getHomeSide().getTeamName());
 
 						
 					}
@@ -147,7 +147,7 @@ public class BarChart3D {
 					else
 					{
 						result1 = result1 - result2;
-						dpd.addValue(result1,"Won Away" ,g.getHomeSide().getTeamName());
+						dpd.addValue(result1,"Lost Away" ,g.getHomeSide().getTeamName());
 
 					}
 
@@ -200,12 +200,12 @@ public class BarChart3D {
 //					      dataset.addValue( 6.0 , ford , safety 
 						
 						result2 = result2 - result1;
-						dpd.addValue(result2,"Won Home" ,g.getAwaySide().getTeamName());
+						dpd.addValue(result2,"Lost Home" ,g.getAwaySide().getTeamName());
 					}
 					else
 					{
 						result1 = result1-result2;
-						dpd.addValue(result1,"Lost Home" ,g.getAwaySide().getTeamName());
+						dpd.addValue(result1,"Won Home" ,g.getAwaySide().getTeamName());
 					}
 				  }
 			  }

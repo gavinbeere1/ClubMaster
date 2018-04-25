@@ -43,64 +43,94 @@
 <center>
 	<h3>Positions your team is lacking</h3>
     <br />
-	<table>
+	<table class="table">
   <tr>
     <th>Position</th>
-    <th>Number <br />  you need</th>&nbsp;&nbsp;
+    <th>Number <br /> you Have</th>&nbsp;&nbsp;
+    <th>Number <br /> you need</th>&nbsp;&nbsp;
+    <th></th>
     &nbsp;&nbsp;<th>Number <br /> we recommend you have in total</th>
     
   </tr>
   <tr>
     <td><text th:text="${fullback}" />&nbsp;&nbsp;</td>
+        <td><text th:text="${TeamF}" /> </td>
     <td><text th:text="${fullbackNo}" /> </td>
+  
+     <td></td>
         <td><text th:text="${recomAmountFB}" /> </td>
     
   </tr>
   <tr>
     <td><text th:text="${winger}" />&nbsp;&nbsp;</td>
+        <td><text th:text="${TeamW}" /> </td>
+    
     <td><text th:text="${wingerNo}" /> </td>
+     <td></td>
         <td><text th:text="${recomAmountW}" /> </td>
     
   </tr>
    <tr>
     <td><text th:text="${centre}" />&nbsp;&nbsp;</td>
+        <td><text th:text="${TeamC}" /> </td>
+    
     <td><text th:text="${centreNo}" /> </td>
+     <td></td>
     <td><text th:text="${recomAmountC}" /> </td>
   </tr>
    <tr>
     <td><text th:text="${outhalf}" />&nbsp;&nbsp;</td>
+        <td><text th:text="${TeamO}" /> </td>
+    
     <td><text th:text="${outhalfNo}" /> </td>
+     <td></td>
         <td><text th:text="${recomAmountO}" /> </td>
     
   </tr>
    <tr>
     <td><text th:text="${scrumhalf}" />&nbsp;&nbsp;</td>
+        <td><text th:text="${TeamS}" /> </td>
+    
     <td><text th:text="${scrumhalfNo}" /> </td>
+     <td></td>
     <td><text th:text="${recomAmountS}" /> </td>
     
     
   </tr>
    <tr>
     <td><text th:text="${backrow}" />&nbsp;&nbsp;</td>
+       <td><text th:text="${TeamB}" /> </td>
+   
+   
     <td><text th:text="${backrowNo}" /> </td>
+     <td></td>
         <td><text th:text="${recomAmountB}" /> </td>
     
   </tr>
     <tr>
     <td><text th:text="${secondrow}" />&nbsp;&nbsp;</td>
+        <td><text th:text="${TeamSR}" /> </td>
+    
     <td><text th:text="${secondrowNo}" /> </td>
+     <td></td>
        <td><text th:text="${recomAmountSR}" /> </td>
   </tr>
   
      <tr>
     <td><text th:text="${prop}" />&nbsp;&nbsp;</td>
-    <td><text th:text="${propNo}" /> </td>
+    <td><text th:text="${TeamP}" /> </td>
+        <td><text th:text="${propNo}" /> </td>
+    
+     <td></td>
         <td><text th:text="${recomAmountP}" /> </td>
     
   </tr>
     <tr>
     <td><text th:text="${hooker}" />&nbsp;&nbsp;</td>
+        <td><text th:text="${TeamH}" /> </td>
+    
     <td><text th:text="${hookerNo}" /> </td>
+     <td></td>
         <td><text th:text="${recomAmountH}" /> </td>
     
   </tr>

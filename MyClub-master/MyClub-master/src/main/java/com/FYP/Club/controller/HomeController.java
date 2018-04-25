@@ -74,10 +74,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.FYP.Club.model.Game;
 import com.FYP.Club.model.Inbox;
 import com.FYP.Club.model.League;
+import com.FYP.Club.model.LeagueObject;
 import com.FYP.Club.model.Outbox;
 import com.FYP.Club.model.PlayerInfo;
 import com.FYP.Club.model.PlayerStat;
@@ -101,7 +101,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class HomeController {
  
 	private String fileLocation;
-
+	
 	 boolean ok;
     @Autowired
     PlayerInfoRepository playerRepository;
@@ -152,7 +152,7 @@ public class HomeController {
 	  ///testing this method
 	  
 	  @RequestMapping(value = "/viewmyteam", method=RequestMethod.GET)
-		public String viewMyTeam(Model model) {
+		public String viewMyTeam(Model model) throws IOException {
 
 		  Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
@@ -270,15 +270,18 @@ public class HomeController {
 		  model.addAttribute("futureHgames", FHGames);
 		  model.addAttribute("wonHgames", WHGames); 
 		  
-//		  ArrayList<Game> Agames = gameRepository.findByAwaySideId(team.getId());
-//		  for (Game g : Agames)
-//		  {
-//			  System.out.println(g.getFinalScore());
-//		  }
+
 		  
-		    
+		  
+		  LeagueObject lo = new LeagueObject(); 
+		 
+		  
+		  model.addAttribute("league", lo.MyLeagueObject() );
+		  
 		  return "myteam";
 	  }
+	  
+	  
 	  //Since I am displaying all in a table anyways, maybe use a search bar implementing JS to search and display a team
 	  //https://codepen.io/adobewordpress/pen/gbewLV
 	  //https:www.w3schools.com/howto/tryit.asp?filename=tryhow_js_filter_table
@@ -1992,15 +1995,24 @@ public class HomeController {
 	@RequestMapping(value="/viewpositioninfo", method=RequestMethod.GET)
 	public String ManagersTeamPositions(Model model)
 	{
-		int wingers = 3;
+		int wingers = 4;
+		int TeamW = 0;
 		int fullback = 1;
+		int TeamF = 0;
 		int centres = 3;
+		int TeamC = 0;
 		int outhalf = 1;
+		int TeamO = 0;
 		int scrumhalf =1;
+		int TeamS = 0;
 		int props = 4;
+		int TeamP = 0;
 		int hooker = 1;
+		int TeamH = 0;
 		int secondRow = 3;
+		int TeamSR = 0;
 		int backrow = 5;
+		int TeamB = 0;
 		
 		
 		 Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
@@ -2025,7 +2037,6 @@ public class HomeController {
 			  }
 		  }
 		  
-		  System.out.println("T: " + teamName);
 	      ////////////////////////////////// Works
 		  
 		  
@@ -2047,62 +2058,88 @@ public class HomeController {
 				  if(ul.getPlayerinfo().getPosition().equals("RightWing"))
 				  {
 				    wingers--;
+				    TeamW++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("LeftWing"))
 				  {
 				    wingers--;
+				    TeamW++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("FullBack"))
 				  {
 				    fullback--;
+				    TeamF++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("OutsideCentre"))
 				  {
 				    centres--;
+				    TeamC++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("InsideCentre"))
 				  {
 				    centres--;
+				    TeamC++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("OutHalf"))
 				  {
 				   outhalf--;
+				   TeamO++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("ScrumHalf"))
 				  {
 				    scrumhalf--;
+				    TeamS++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("Eight"))
 				  {
 				    backrow--;
+				    TeamB++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("OpenSideFlanker"))
 				  {
 				    backrow--;
+				    TeamB++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("BlindSideFlanker"))
 				  {
 				    backrow--;
+				    TeamB++;
 				  } 
 				  if(ul.getPlayerinfo().getPosition().equals("SecondRow"))  
 				  {
 					secondRow--;
+					 TeamSR++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("LooseHead"))  
 				  {
 					props--;
+					 TeamP++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("Hooker"))  
 				  {
 					hooker--;
+					 TeamH++;
 				  }
 				  if(ul.getPlayerinfo().getPosition().equals("TightHead"))  
 				  {
 					props--;
+					TeamP++;
 				  }
 				  
 			   }
 			  }/// End of loop recording the players positions etc.
+
+
+			 model.addAttribute("TeamW", TeamW);
+			 model.addAttribute("TeamF", TeamF);
+			 model.addAttribute("TeamC", TeamC);
+			 model.addAttribute("TeamO", TeamO);
+			 model.addAttribute("TeamS", TeamS);
+			 model.addAttribute("TeamP", TeamP);
+			 model.addAttribute("TeamH", TeamH);
+			 model.addAttribute("TeamSR", TeamSR);
+			 model.addAttribute("TeamB", TeamB);
+
 
 		   	  //idea behind below , if the position needs to be filled, pass the variable through model attribute, display above a search players index with players.playerinfo.getpositions showing
 			  if (  fullback >= 0 ) //&& position.equals("FullBack")
@@ -2123,7 +2160,7 @@ public class HomeController {
 				  model.addAttribute("wingerNo", wingers);
 				  model.addAttribute("recomAmountW", recomAmountW);
 
-
+				  System.out.println("Wingers " +  winger2 + wingers + recomAmountW);
 			  }
 			  if (  centres >= 0)// && (position.equals("InsideCentre") || position.equals("OutsideCentre") ))
 			  {
