@@ -61,10 +61,10 @@
  	<td th:text="${outbox.status}"></td>
  	 
  	 <td>
- 	<a class="btn btn-info" role="button"  th:href="@{/viewManager/{name}(name=${outbox.receiverName})}"><span>View Manager</span></a>
+ 	<a class="btn btn-info" role="button"  th:href="@{/viewManager/{name}(name=${outbox.receiverName})}"><span>View </span></a>
  	</td>
  	<td>
- 	<a style="color:blue" th:href="@{/approveAndJoin/{name}(name=${outbox.receiverName})}" th:if="${not #strings.startsWith(outbox.status, 'P')}">Join Team?!</a>
+ 	<a class="btn btn-success" role="button"  th:href="@{/approveAndJoin/{name}(name=${outbox.receiverName})}" th:if="${#strings.startsWith(outbox.status, 'Acc')}">Join Team?!</a>
  	</td>
 	
  <!-- 	 <td>

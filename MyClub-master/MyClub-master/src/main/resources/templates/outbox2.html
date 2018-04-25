@@ -56,16 +56,16 @@
  	</tr>
  	
  	<tr th:each="inbox : ${outboxs}">
- 	<td th:text="${inbox.senderName}"></td>
+ 	<td th:text="${inbox.receiverName}"></td>
  	<td th:text="${inbox.status}"></td>
  	 
  	 <td>
- 	<a class="btn btn-info" role="button" th:href="@{/viewsender/{name}(name=${inbox.senderName})}"><span>View Player</span></a>
+ 	<a class="btn btn-info" role="button" th:href="@{/viewsender/{name}(name=${inbox.receiverName})}"><span>View Player</span></a>
  	</td>
 	<td></td>
 	<td></td>
  	 <td>
- 	<a th:href="@{/deletemessage/{name}(name=${inbox.status})}" th:if="${not #strings.startsWith(inbox.status, 'D')}" ><span>Decline Request</span></a>
+ 	<a th:href="@{/deletemessage/{name}(name=${inbox.status})}" th:if="${not #strings.startsWith(inbox.status, 'D') }" ><span>Decline Request</span></a>
  	</td>
  	
  	

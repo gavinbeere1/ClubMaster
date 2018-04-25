@@ -64,15 +64,17 @@
  	<a  class="btn btn-info" role="button" th:href="@{/viewsender/{name}(name=${inbox.senderName})}"><span>View Users Profile</span></a>
  	</td>
 	<td>
-  	<a class="btn btn-danger" role="button" th:href="@{/playerapproveAndJoin/{name}(name=${inbox.senderName})}" th:if="${not #strings.startsWith(inbox?.status, 'P') }">Join Team?!</a>
+  	<a class="btn btn-danger" role="button" th:href="@{/playerapproveAndJoin/{name}(name=${inbox.senderName})}" th:unless="${#strings.startsWith(inbox?.status, 'Acc') OR #strings.startsWith(inbox?.status, 'D') OR #strings.startsWith(inbox?.status, 'P')}">Join Team?!</a>
  	</td>
-	<td></td>
+	<td></td><!-- th:if="${not #strings.startsWith(inbox?.status, 'P') }" -->
  	 <td>
- 	<a class="btn btn-danger" role="button" th:href="@{/deletemessage/{name}(name=${inbox.senderName})}" th:if="${(not #strings.startsWith(inbox.status, 'D'))}" ><span>Decline Request</span></a>
+ 	<a class="btn btn-danger" role="button" th:href="@{/deletemessage/{name}(name=${inbox.senderName})}" th:unless="${#strings.startsWith(inbox.status, 'D') OR #strings.startsWith(inbox?.status, 'App') OR #strings.startsWith(inbox?.status, 'Acc')}" ><span>Decline Request</span></a>
  	</td>
  	
- 	
- 	
+ 	<td>
+ 	<a class="btn btn-warning" role="button"  onclick="ConfirmAlert();" th:href="@{/acceptmanager/{id}(id=${inbox.senderName})}" th:unless="${#strings.startsWith(inbox?.status, 'App') OR #strings.startsWith(inbox?.status, 'D')}"><span>Accept Request</span></a>
+  	</td>
+  	      <br />  
  
  	</tr>
  	</table>
@@ -86,7 +88,17 @@
 	<br /><br />
   	             <a class="btn btn-info" role="button" th:href="@{/welcome}">Home</a>
 
-
+<script>
+function ConfirmAlert() {
+    var txt;
+    if (confirm("Yes or No!")) {
+        txt = "You pressed OK!";
+    } else {
+        txt = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = txt;
+}
+</script>
 </body>
 </center>
 </html>

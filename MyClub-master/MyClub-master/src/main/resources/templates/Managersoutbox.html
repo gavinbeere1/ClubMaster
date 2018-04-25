@@ -10,29 +10,30 @@
   <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">MyClub</a>
+      <a class="navbar-brand" href="/">MyClub</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="/">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
+      <li class="active"><a href="/welcome">Home</a></li>
+
     </ul>
-    <form class="navbar-form navbar-left" action="/action_page.php">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search" name="search"></input>
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+   
   </div>
 </nav>
+ <style>
+  .bg-1 { 
+       background-color: #1abc9c; /* Green */
+        color: #ffffff;
+    }
+  </style>
  </head>
-  <p th:inline="text">
+   <p th:inline="text" >
       You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
-      (<a href="/logout">logout</a>)
+          <a href="/logout" class="btn btn-danger" role="button">Logout</a>
+
     </p>
-     <div align="center">
+       <div class="container-fluid bg-1 text-center" align="center">
  
-    <a> <img src="images/logo.jpg"> </img></a>
+    <a> <img src="/images/logo.jpg"> </img></a>
  </div>
 	
 <center>
@@ -43,8 +44,7 @@
  
  
  	<h3 style="color:blue">Applications sent</h3>
- 	
- 	<h4>Can you accept offers? (i.e Are you a free agent): <text th:text="${status}" /></h4>
+ 
  	
  	
 <table class = "table table-striped" id="teamTable">
@@ -61,9 +61,11 @@
  	<td th:text="${outbox.status}"></td>
  	 
  	 <td>
- 	<a th:href="@{/viewPlayer/{name}(name=${outbox.receiverName})}"><span>View Player</span></a>
+ 	<a class="btn btn-info" role="button"   th:href="@{/viewPlayer/{name}(name=${outbox.receiverName})}"><span>View Player</span></a>
  	</td>
  	<td>
+ 	
+ 	 	       	<a class="btn btn-success" role="button" onclick="ConfirmAlert();" th:href="@{/approveAndJoin/{name}(name=${outbox.receiverName})}" th:if="${#strings.startsWith(outbox.status, 'Acc')}" ><span>Approve Player</span></a>
 <!--  	<a style="color:blue" th:href="@{/approveAndJoin/{name}(name=${outbox.receiverName})}" th:if="${not #strings.startsWith(outbox.status, 'P')}">Join Team?!</a>
  --> 	</td>
 	
@@ -81,9 +83,8 @@
  
  
  <br />
-			<a style="color:blue" th:href="@{/showallOutboxmessages}"><span>Show Seen Notifications</span></a>
 	<br /><br />
-	          <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>			
+	          <a class="btn btn-info" role="button"   th:href="@{/welcome}">HomeScreen!</a>			
 
 
 </body>

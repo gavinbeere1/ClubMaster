@@ -661,6 +661,7 @@ public class HomeController {
 				  }
 				  else
 				  {
+					  if (inbox != null)
 					  inbox.setStatus("Accepted");
 					  System.out.println("Accepted");
 					  iR.save(inbox);
@@ -841,10 +842,12 @@ public class HomeController {
 	   
 	   
 	   Inbox inbox = iR.findBySenderNameAndReceiverName(name, email);
+	   if (inbox != null)
+	   {
 	   inbox.setViewed("Seen");
 	   ///
 	   iR.save(inbox);
-	  
+	   }
 	   UserLogin player = userRepository.findByUserName(name);
 	
 	   if (player.getUserType().equals("Manager"))
