@@ -177,27 +177,7 @@ public class BarChart3D {
 
 					if (result1 < result2)
 					{
-//						
-//						WonHomeGames = new WonHomeGames();
-//						WonHomeGames.setDatePlayed(g.getDatePlayed());
-//						WonHomeGames.setHomeScore(result2);
-//						WonHomeGames.setAwayScore(result1);
-//						WonHomeGames.setHomeTeam(g.getHomeSide().getTeamName());
-//						WonHomeGames.setAwayTeam(g.getAwaySide().getTeamName());
-//						dataset.addValue( 1.0 , fiat , speed );
-//					      dataset.addValue( 3.0 , fiat , userrating );
-//					      dataset.addValue( 5.0 , fiat , millage );
-//					      dataset.addValue( 5.0 , fiat , safety );
-//
-//					      dataset.addValue( 5.0 , audi , speed );
-//					      dataset.addValue( 6.0 , audi , userrating );
-//					      dataset.addValue( 10.0 , audi , millage );
-//					      dataset.addValue( 4.0 , audi , safety );
-//
-//					      dataset.addValue( 4.0 , ford , speed );
-//					      dataset.addValue( 2.0 , ford , userrating );
-//					      dataset.addValue( 3.0 , ford , millage );
-//					      dataset.addValue( 6.0 , ford , safety 
+
 						
 						result2 = result2 - result1;
 						dpd.addValue(result2,"Lost Home" ,g.getAwaySide().getTeamName());

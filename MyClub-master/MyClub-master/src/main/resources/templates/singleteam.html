@@ -25,6 +25,12 @@
         color: #ffffff;
     }
   </style>
+    <style type="text/css">
+    .my-team {
+        background-color: red;
+        font-weight: bold;
+    }
+    </style>
  </head>
    <p th:inline="text" >
       You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
@@ -49,6 +55,44 @@
 	<h3>Name: <text th:text="${team.teamName}" /> </h3>
 	<h3>Address: <text th:text="${team.teamAddress}" /> </h3>
 	<h3>Members:  </h3>
+	
+	<table class = "table">
+
+<tr>
+
+<td><h5>Name</h5></td>
+<td><h5>Position</h5></td>
+<td><h5>Played</h5></td>
+<td><h5>Won</h5></td>
+<td><h5>Draw</h5></td>
+<td><h5>Lost</h5></td>
+<td><h5>Points For</h5></td>
+<td><h5>Points Against</h5></td>
+<td><h5>Points Difference</h5></td>
+<td><h5>Winning Bonus Points</h5></td>
+<td><h5>Losing Bonus Points</h5></td>
+<td><h5>Points</h5></td>
+
+</tr>
+<!-- <tr th:each="league : ${league}" >
+
+ <td bgcolor="#FF0000" th:unless="${!#strings.startsWith(league?.name, myteam?.teamName) }" th:text="${league?.name}" /> -->
+<tr th:each="league : ${league}" th:classappend="${#strings.startsWith(league?.name, team?.teamName)}? 'my-team'">
+    <td th:text="${league?.name}" />
+
+ <td th:text="${league?.pos}" />
+ <td th:text="${league?.played}" />
+ <td th:text="${league?.won}" />
+ <td th:text="${league?.drew}" />
+ <td th:text="${league?.lost}" />
+ <td th:text="${league?.pointsFor}" />
+ <td th:text="${league?.pointsAgainst}" />
+  <td th:text="${league?.pointsDifference}" />
+  <td th:text="${league?.Tb}" />
+  <td th:text="${league?.lb}" />
+  <td th:text="${league?.pts}" />
+ </tr>
+ </table>
 	
 	<div class="list-group">
 	<ul class="list-group-item">

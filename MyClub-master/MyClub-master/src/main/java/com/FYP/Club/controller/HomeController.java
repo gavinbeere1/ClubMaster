@@ -198,9 +198,8 @@ public class HomeController {
 			  String[] output = result.split("-");
 			  int result1 = Integer.parseInt(output[0].trim());
 			  int result2 = Integer.parseInt(output[1].trim());
-
-				if (result1 < result2)
-				{
+			  System.out.println(result1 + "vs" + result2);
+				
 					
 					WonHomeGames = new WonHomeGames();
 					WonHomeGames.setDatePlayed(g.getDatePlayed());
@@ -209,7 +208,8 @@ public class HomeController {
 					WonHomeGames.setHomeTeam(g.getHomeSide().getTeamName());
 					WonHomeGames.setAwayTeam(g.getAwaySide().getTeamName());
 					WHGames.add(WonHomeGames);  
-				}
+				
+				
 			  }
 			  else
 			  {
@@ -774,7 +774,7 @@ public class HomeController {
  
  
    @RequestMapping(value="/viewteam/{id}", method=RequestMethod.GET)
-   public String ViewTeam(Model model, @PathVariable Long id) {
+   public String ViewTeam(Model model, @PathVariable Long id) throws IOException {
 	   
 
 	 
@@ -786,7 +786,12 @@ public class HomeController {
 	   model.addAttribute("team", team);
 	   model.addAttribute("anythingBut", anythingBut);
 	  System.out.print(anythingBut);
-	   return "singleteam";
+	  LeagueObject lo = new LeagueObject(); 
+		 
+	  
+	  model.addAttribute("league", lo.MyLeagueObject() );
+	  
+	  return "singleteam";
    }
 
    @RequestMapping(value="/showteams", method=RequestMethod.GET)
