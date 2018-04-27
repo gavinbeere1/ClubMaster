@@ -201,8 +201,8 @@ public class BarChart3D {
 	  private JFreeChart createChart(CategoryDataset dpd, String chartTitle) throws IOException
 	  {
 		  JFreeChart barchart = ChartFactory.createBarChart3D( 
-			         team.getTeamName() + " Win/Loss" ,  // chart title                   
-			         "Teams", "Points Difference", dpd ,         // data 
+			         team.getTeamName() + " Win/Loss For Home Away" ,  // chart title                   
+			         "Teams Played", "Points Difference", dpd ,         // data 
 			         PlotOrientation.VERTICAL, true ,            // include legend                   
 			         true, 
 			         false);

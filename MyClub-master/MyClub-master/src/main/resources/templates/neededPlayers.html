@@ -7,16 +7,29 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
  
-  <nav class="navbar navbar-inverse">
+     <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">MyClub</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="/welcome">Home</a></li>
+      <li><a href="/viewmyteam">My Team</a></li>
+	  <li><a href="/uploadStats" th:if="${#strings.startsWith(user.userType, 'Player')}">Upload Stats</a></li>
+      <li><a href="/viewStats" th:if="${#strings.startsWith(user.userType, 'Player')}">View My Stats</a></li>
+        <li><a href="/showplayers2" th:if="${#strings.startsWith(user.userType, 'Manager')}">Search for Players</a></li>
+           <li><a href="/showplayers" th:if="${#strings.startsWith(user.userType, 'Manager')}">Show All Players</a></li>
+       <li><a href="/showteams2">Search For Teams</a></li>     
+      <li><a href="/showteams">Show all Teams</a></li>
+       <li><a href = "/shownotifications">View Inbox</a></li>
+   <li><a href="/managersOutbox">View Outbox</a></li>
+      <li><a href="/viewpositioninfo" th:if="${#strings.startsWith(user.userType, 'Manager')}">Positions your team needs</a></li>
+   
+   <li><a href="/freePositions" th:if="${#strings.startsWith(user.userType, 'Player')}">Teams Looking For You</a></li>
+
 
     </ul>
-   
+
   </div>
 </nav>
  <style>

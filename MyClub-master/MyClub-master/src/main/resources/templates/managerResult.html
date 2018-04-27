@@ -15,13 +15,13 @@
     <ul class="nav navbar-nav">
       <li class="active"><a href="/welcome">Home</a></li>
       <li><a href="/viewmyteam">My Team</a></li>
-        <li><a href="/showplayers2">Search for Players</a></li>
-           <li><a href="/showplayers">Show All Players</a></li>
+        <li><a href="/showplayers2" th:if="${#strings.startsWith(user.userType, 'Manager')}">Search for Players</a></li>
+           <li><a href="/showplayers" th:if="${#strings.startsWith(user.userType, 'Manager')}">Show All Players</a></li>
        <li><a href="/showteams2">Search For Teams</a></li>     
       <li><a href="/showteams">Show all Teams</a></li>
        <li><a href = "/shownotifications">View Inbox</a></li>
    <li><a href="/managersOutbox">View Outbox</a></li>
-      <li><a href="/viewpositioninfo">Positions your team needs</a></li>
+      <li><a href="/viewpositioninfo" th:if="${#strings.startsWith(user.userType, 'Manager')}">Positions your team needs</a></li>
    
   
 
@@ -52,11 +52,11 @@
 <body>
  <div class="container">
 <h3>Manager:</h3>
-<img th:src="@{${'/images/' + manager?.imagePath }}"  />
-<h4>Name: <text th:text="${manager?.userName}" /> </h4>
- <h4>Last Name: <text th:text="${manager?.lastName}" /> </h4>
- <h4>Phone: <text th:text="${manager?.phone}" /> </h4>
- <h4>Address: <text th:text="${manager?.address}" /> </h4>
+<img th:src="@{${'/images/' + user?.imagePath }}"  />
+<h4>Name: <text th:text="${user?.userName}" /> </h4>
+ <h4>Last Name: <text th:text="${user?.lastName}" /> </h4>
+ <h4>Phone: <text th:text="${user?.phone}" /> </h4>
+ <h4>Address: <text th:text="${user?.address}" /> </h4>
 
  
     </div>

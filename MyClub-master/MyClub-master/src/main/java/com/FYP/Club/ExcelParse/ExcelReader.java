@@ -7,7 +7,12 @@ import java.io.IOException;
 import java.util.Iterator;
 
 public class ExcelReader {
+	
+	
+	//Note if you want to upload an excel file, make sure the excel file is saved in the path below or else change this path name appropriately
     public static final String SAMPLE_XLSX_FILE_PATH = "Z:/4th & Final/Sem 1/FYP/Excel/Player2.xlsx";
+//  public static final String SAMPLE_XLSX_FILE_PATH = "/images/Excel/Player2.xlsx";
+
 
     public static void main(String[] args) throws IOException, InvalidFormatException {
 

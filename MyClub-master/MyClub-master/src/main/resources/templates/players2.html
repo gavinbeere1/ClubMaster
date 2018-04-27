@@ -16,9 +16,22 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="/welcome">Home</a></li>
+      <li><a href="/viewmyteam">My Team</a></li>
+	  <li><a href="/uploadStats" th:if="${#strings.startsWith(user.userType, 'Player')}">Upload Stats</a></li>
+      <li><a href="/viewStats" th:if="${#strings.startsWith(user.userType, 'Player')}">View My Stats</a></li>
+        <li><a href="/showplayers2" th:if="${#strings.startsWith(user.userType, 'Manager')}">Search for Players</a></li>
+           <li><a href="/showplayers" th:if="${#strings.startsWith(user.userType, 'Manager')}">Show All Players</a></li>
+       <li><a href="/showteams2">Search For Teams</a></li>     
+      <li><a href="/showteams">Show all Teams</a></li>
+       <li><a href = "/shownotifications">View Inbox</a></li>
+   <li><a href="/managersOutbox">View Outbox</a></li>
+      <li><a href="/viewpositioninfo" th:if="${#strings.startsWith(user.userType, 'Manager')}">Positions your team needs</a></li>
+   
+   <li><a href="/freePositions" th:if="${#strings.startsWith(user.userType, 'Player')}">Teams Looking For You</a></li>
+
 
     </ul>
-   
+
   </div>
 </nav>
  <style>
@@ -57,8 +70,8 @@
 						<th>Username</th>	
 							 	<th>Position</th> 
 								 	<th>Age</th> 
-							 	<th>Height</th> 
-							 								 	<th>Weight</th> 
+							 	<th>Height Cm</th> 
+							 								 	<th>Weight Kg</th> 
 							 	
 							 	
 										
@@ -83,14 +96,14 @@
 					
 					var customerRow = '<tr>' +
 					'<td><img src="/images/' + userLogin.imagePath + '"/></td>' +
-									'<td>' + userLogin.id + '</td>' +
+								
 										'<td>' + userLogin.firstName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.lastName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.userName + '</td>' +
   										'<td>' + userLogin.playerinfo.position + '</td>' +
   										'<td>' + userLogin.playerinfo.age + '</td>' +
-  										'<td>' + userLogin.playerinfo.height + '</td>' +
-  										'<td>' + userLogin.playerinfo.weight + '</td>' +
+  										'<td>' + userLogin.playerinfo.height + ' Cm</td>' +
+  										'<td>' + userLogin.playerinfo.weight + ' Kg</td>' +
   										
   										
 															

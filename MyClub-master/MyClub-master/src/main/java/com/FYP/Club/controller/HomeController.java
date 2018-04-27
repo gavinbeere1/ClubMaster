@@ -157,8 +157,8 @@ public class HomeController {
 		  Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
-//	      UserLogin user = userRepository.findByUserName(email);
-	      
+	      UserLogin user = userRepository.findByUserName(email);
+	      model.addAttribute("user", user);
 	      Team team = new Team();
 	      ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
 		   
@@ -275,7 +275,7 @@ public class HomeController {
 		  
 		  LeagueObject lo = new LeagueObject(); 
 		 
-		  
+		 model.addAttribute("user", user);
 		  model.addAttribute("league", lo.MyLeagueObject() );
 		  
 		  return "myteam";
@@ -544,9 +544,9 @@ public class HomeController {
 	      
 	      if (user.getUserType().equals("Player"))
 			{
+			
 				
-				
-	    	  	model.addAttribute("player", user);
+	    	  	model.addAttribute("user", user);
 				result = ("welcome");
 				//do whats mentioned below for all the entities
 				//players result page should ask the player more questions (see the player model for these attributes, then save them to this "player" and point the player to the welcome page
@@ -554,7 +554,7 @@ public class HomeController {
 
 			if (user.getUserType().equals("Manager"))
 			{
-				model.addAttribute("manager", user);
+				model.addAttribute("user", user);
 				//here i will try and add a user role (admin) to the manager entity so they can login as admin
 				result = ("managerResult");
 			}
@@ -787,8 +787,12 @@ public class HomeController {
 	   model.addAttribute("anythingBut", anythingBut);
 	  System.out.print(anythingBut);
 	  LeagueObject lo = new LeagueObject(); 
-		 
-	  
+	  Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+      UserLogin user = userRepository.findByUserName(email);
+	  model.addAttribute("user", user);
+
 	  model.addAttribute("league", lo.MyLeagueObject() );
 	  
 	  return "singleteam";
@@ -799,16 +803,30 @@ public class HomeController {
    {
 	   ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
 	  
+
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+	      
+	      model.addAttribute("user", user);
+	      
 	   model.addAttribute("teams", teams);
 	  
 	   return "teams";
    }
    
    @RequestMapping(value="/showteams2", method=RequestMethod.GET)
-   public String aYeh()
+   public String aYeh(Model model)
    {
 
-	   return "teams2";
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+	      model.addAttribute("user", user);
+	      
+	      return "teams2";
 
    }
 
@@ -828,7 +846,12 @@ public class HomeController {
 	   UserLogin player = userRepository.findOne(id);
 	   
 	   String image = player.getImagePath();
-	
+	 
+	   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+   UserLogin user = userRepository.findByUserName(email);
+   
+   model.addAttribute("user", user);
 	   
 	   model.addAttribute("image", image);
 	   model.addAttribute("player", player);
@@ -948,7 +971,12 @@ public class HomeController {
 	   String type = "Player";	  
 	 
 	   ArrayList<UserLogin> players = (ArrayList<UserLogin>) userRepository.findByUserType(type);
-	   
+
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+model.addAttribute("user", user);
 	   
 //	   List<UserLogin> players = (List<UserLogin>) userRepository.findByUserType("Player");
 	   model.addAttribute("players", players);
@@ -957,9 +985,14 @@ public class HomeController {
 	   
    }
    @RequestMapping(value="/showplayers2", method=RequestMethod.GET)
-   public String aYeh2()
+   public String aYeh2(Model model)
    {
 
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+model.addAttribute("user", user);
 	   return "players2";
  
    }
@@ -1221,7 +1254,8 @@ public class HomeController {
 	      //only shows pending messages.
 	      ArrayList<Inbox> inboxs = (ArrayList<Inbox>) iR.findByReceiverNameAndStatus(email, "Pending");
 
-		  
+	
+	 model.addAttribute("user", user);
 	      model.addAttribute("inboxs", inboxs);
 		  
 		 
@@ -1258,7 +1292,7 @@ public class HomeController {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
-//	      UserLogin user = userRepository.findByUserName(email);
+	      UserLogin user = userRepository.findByUserName(email);
 
 	      
 	      //only shows pending messages.
@@ -1266,7 +1300,7 @@ public class HomeController {
 
 		  
 	      model.addAttribute("inboxs", inboxs);
-		  
+		  model.addAttribute("user", user);
 		
 		
 		return "inbox";
@@ -1341,7 +1375,7 @@ public class HomeController {
 	  
 	      ArrayList<Outbox> outbox = (ArrayList<Outbox>) oR.findBySenderName(email);
 
-		  
+		  model.addAttribute("user", user);
 	      model.addAttribute("outbox", outbox);
 	      
 	      
@@ -1502,7 +1536,7 @@ public class HomeController {
 		   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		   String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
-		  
+		 
 		   
 		 Outbox outbox = oR.findBySenderNameAndReceiverName(email, name);
 		   outbox.setStatus("Approved");
@@ -1539,7 +1573,7 @@ public class HomeController {
 			  
 			  }
 		   
-		
+			  model.addAttribute("player", player);
 		   return "welcome";
 	   }
 
@@ -1638,8 +1672,11 @@ public class HomeController {
 	@RequestMapping(value="/uploadStats", method=RequestMethod.GET)
 	public String uploadStats(Model model) 
 	{
-	  
-	
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+	model.addAttribute("user", user);
 		
 		return "stats";
 	}
@@ -1840,37 +1877,8 @@ public class HomeController {
 	      
 	      String position = user.getPlayerinfo().getPosition();
 
-	      
-	     
-	      
-//		int forwards = 13;
-//		int backs = 10;
 		
-//		int frontRow = 6;
-//		int locks = 3;
-//		int backrow = 4;
-//		int halfBacks=3;
-//		int centres=4;
-//		int backThree=5;
-		
-		int wingers = 3;
-		int fullback = 1;
-		int centres = 3;
-		int outhalf = 1;
-		int scrumhalf =1;
-		int props = 4;
-		int hooker = 1;
-		int secondRow = 3;
-		int backrow = 5;
-//		int fullback = -1;
-//		int centres = -3;
-//		int outhalf = -1;
-//		int scrumhalf =-1;
-//		int props = -4;
-//		int hooker = -1;
-//		int secondRow = -3;
-//		int backrow = -5;
-		
+
 
 		ArrayList<Team> matchedTeams = new ArrayList<Team>();
 			
@@ -1878,6 +1886,16 @@ public class HomeController {
 		   
 		  for (Team t : teams)
 		  {
+			  
+			  int wingers = 3;
+				int fullback = 1;
+				int centres = 3;
+				int outhalf = 1;
+				int scrumhalf = 0;
+				int props = 4;
+				int hooker = 1;
+				int secondRow = 3;
+				int backrow = 5;
 			  
 			  /// Going through each team
 			  
@@ -1951,26 +1969,28 @@ public class HomeController {
 			  }
 			  if (wingers >= 0 && position.equals("RightWing")  || position.equals("LeftWing"))
 			  {
-				  System.out.println("TTTTTTTTTTTTTTTTTTTTTEST TEAM : " + wingers + " " + position);
 				  matchedTeams.add(t);
 			  }
 			  if (  centres >= 0 && (position.equals("InsideCentre") || position.equals("OutsideCentre") ))
 			  {
+				
 				  matchedTeams.add(t);
 			  }
 			  if (  outhalf >= 0 && position.equals("OutHalf") )
 			  {
 				  matchedTeams.add(t);
 			  }
-			  if (  scrumhalf >= 0 && position.equals("ScrumHalf") )
+			  if (  (scrumhalf >= 0) && (position.equals("ScrumHalf")) )
 			  {
 				  matchedTeams.add(t);
+				
+
 			  }
 			  if (  backrow >= 0 && (position.equals("Eight") || position.equals("BlindSideFlanker") || position.equals("OpenSideFlanker") ))
 			  {
 				  matchedTeams.add(t);
 			  }
-			  if ( secondRow >= 0 && position.equals("SecondRow") )
+			  if ( secondRow >=0 && position.equals("SecondRow") )
 			  {
 				  matchedTeams.add(t);
 			  }
@@ -1990,7 +2010,7 @@ public class HomeController {
 		  ////////////////////Codes getting to here at least.
 
 	
-		  
+		  model.addAttribute("user", user);
 	      model.addAttribute("teams", matchedTeams);
 		  
 
@@ -2236,8 +2256,7 @@ public class HomeController {
 
 
 			  }  
-
-
+			  model.addAttribute("user", user);
 		return "neededPlayers";
 	}
 	
