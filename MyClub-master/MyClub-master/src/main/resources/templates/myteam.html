@@ -44,6 +44,14 @@
         font-weight: bold;
     }
 </style>
+
+<script>
+function myFunction() {
+	console.log('It works');
+    document.getElementById("${item?.id}").contentEditable = true;
+
+}
+</script>
  </head>
    <p th:inline="text" >
       You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
@@ -204,15 +212,23 @@
      <!--    <h5>ID:<text th:text="${item?.id}" /> </h5> -->
     <li class="list-group-item">
     
-    <span class="badge"><text th:text="${item?.playerinfo?.position}" /></span>
+    <span class="badge"><text th:text="${item?.playerinfo?.position}"/></span>
     <br />
     <img th:src="@{${'/images/' + item?.imagePath }}"  />
-    <h5>Position:<text th:text="${item?.playerinfo?.position}" /></h5>
+    <h5>Position:<text th:text="${item?.playerinfo?.position}" th:id="${item?.id}"/></h5>
     <h5>First Name:<text th:text="${item?.firstName}" /> </h5>
     <h5>Last Name:<text th:text="${item?.lastName}" /> </h5>
     <h5>Type:<text th:text="${item?.userType}" /> </h5>
     <h5>Username:<text th:text="${item?.userName}" /> </h5>
     
+<!--  <button onclick="myFunction()" th:if="${#strings.startsWith(user.userType, 'Manager')}" class="btn btn-warning" role="button">Change Players Position</button>
+ <br/>
+ <br/>
+ <form action="#" th:action="@{/changePosition/{id}(id=${item?.id})}"  method="get" th:if="${#strings.startsWith(user.userType, 'Manager')}">
+ <td></td><td><button type="submit" class="btn btn-info">Submit</button></td>
+ </form> -->
+ <br/>
+  <br/>
  
 <!--     <a colour="red" th:href="@{/viewplayer/{id}(id=${item?.id})}">View Player</a>
  -->      <a th:href="@{/viewplayer/{id}(id=${item?.id})}" class="btn btn-info" role="button">View Players Profile</a> 
@@ -222,18 +238,14 @@
  
     </ul>
  	    <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
- 	
-<!-- 	        <ul class="list-group">
-  <li class="list-group-item">New <span class="badge">12</span></li>
-  <li class="list-group-item">Deleted <span class="badge">5</span></li> 
-  <li class="list-group-item">Warnings <span class="badge">3</span></li> 
-</ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
- 	 -->
+
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
  	
 	   <a style="color:red" th:if="${myteam != null}" th:href="@{/leaveteam/{id}(id=${myteam?.id})}">Leave Team?!</a>
 
 </center>	   	
 </div>
+
+
 </body>
 </html>

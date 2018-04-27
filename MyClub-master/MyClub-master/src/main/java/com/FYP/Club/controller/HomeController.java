@@ -591,13 +591,15 @@ public class HomeController {
    ///@PathVariable("team") Long teamId, before principal
    
    @RequestMapping(value = "/acceptplayer/{id:.+}", method={RequestMethod.POST, RequestMethod.GET})
-   public String AcceptPlayer(Principal principal, @PathVariable String id) throws ConcurrentModificationException{
+   public String AcceptPlayer(Principal principal, @PathVariable String id, Model model) throws ConcurrentModificationException{
 
 	  ///Need to check here if a player has already been accepted by a manager
 	   
 	   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
+		      UserLogin user = userRepository.findByUserName(email);
+	 model.addAttribute("user", user);
 	  
 	   UserLogin requestedUser = userRepository.findByUserName(id);
 	   
@@ -682,13 +684,16 @@ public class HomeController {
    
    
    @RequestMapping(value = "/acceptmanager/{id:.+}", method={RequestMethod.POST, RequestMethod.GET})
-   public String AcceptManager(Principal principal, @PathVariable String id) throws ConcurrentModificationException{
+   public String AcceptManager(Principal principal, @PathVariable String id, Model model) throws ConcurrentModificationException{
 
 	  ///Need to check here if a player has already been accepted by a manager
 	   
 	   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
+		
+		      UserLogin user = userRepository.findByUserName(email);
+	 model.addAttribute("user", user);
 	  
 	   UserLogin requestedUser = userRepository.findByUserName(id);
 	   
@@ -839,6 +844,15 @@ public class HomeController {
 	   
 		return cueList;
 	}
+   
+   @RequestMapping(value="/changePosition/{id}", method=RequestMethod.GET)
+   public String ChangePlayer(Model model, @PathVariable String id) {
+	   System.out.println("we made it " + id);
+
+	   System.out.println("Id: " + id);
+       return "redirect:/viewmyteam";
+
+   }
   
    @RequestMapping(value="/viewplayer/{id}", method=RequestMethod.GET)
    public String ViewPlayer(Model model, @PathVariable Long id) {
@@ -869,7 +883,8 @@ public class HomeController {
 	   //Going to attempt to change the status of the notification to seen once a view player is clicked
 	   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
-
+	      UserLogin user = userRepository.findByUserName(email);
+	      model.addAttribute("user",user);
 	   
 	   
 	   Inbox inbox = iR.findBySenderNameAndReceiverName(name, email);
@@ -1032,7 +1047,7 @@ model.addAttribute("user", user);
 
 
    @RequestMapping(value="/leaveteam/{id}", method={RequestMethod.POST, RequestMethod.GET})
-   public String leaveTeam(@PathVariable Long id) {
+   public String leaveTeam(@PathVariable Long id, Model model) {
 	   
 	   System.out.println("PLEASE WORK?");
 	   
@@ -1040,6 +1055,10 @@ model.addAttribute("user", user);
        
 	   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 	   String email = loggedInUser.getName();
+	      UserLogin user = userRepository.findByUserName(email);
+model.addAttribute("user", user);
+
+	   
 	   
 	   for(UserLogin ul : team.getUserLogins())
 		  {
@@ -1450,7 +1469,9 @@ model.addAttribute("user", user);
 		   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
+		   UserLogin user = userRepository.findByUserName(email);
 		   
+		   model.addAttribute("user", user);
 		  
 		   Outbox outbox = oR.findBySenderNameAndReceiverName(email, name);
 		   outbox.setViewed("Seen");
@@ -1480,7 +1501,8 @@ model.addAttribute("user", user);
 		   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		   String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
-		   
+		   UserLogin user = userRepository.findByUserName(email);
+		   model.addAttribute("user", user);
 		   
 		   Outbox outbox = oR.findBySenderNameAndReceiverName(name, email);
 		   outbox.setStatus("Approved");
@@ -1528,13 +1550,18 @@ model.addAttribute("user", user);
 
 		   System.out.println(name);
 		   
-		  
+
+			Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+		      UserLogin user = userRepository.findByUserName(email);
+	 model.addAttribute("user", user);
 		   
 		   //this method works, although returns "null" if theres duplicate users
 		   //wont work for ***@gmail.com address's (FIXED: truncating the name, see above {name:.+})
 		   //Going to attempt to change the status of the notification to seen once a view player is clicked
-		   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		   String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+//		   Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+//		   String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
 
 		 
 		   
