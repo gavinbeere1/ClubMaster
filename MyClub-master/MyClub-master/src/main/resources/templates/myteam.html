@@ -221,6 +221,9 @@ function myFunction() {
     <h5>Type:<text th:text="${item?.userType}" /> </h5>
     <h5>Username:<text th:text="${item?.userName}" /> </h5>
     
+    	
+ 	
+    
 <!--  <button onclick="myFunction()" th:if="${#strings.startsWith(user.userType, 'Manager')}" class="btn btn-warning" role="button">Change Players Position</button>
  <br/>
  <br/>
@@ -229,9 +232,18 @@ function myFunction() {
  </form> -->
  <br/>
   <br/>
- 
+<!--  		 	<a class="btn btn-danger" role="button"  th:href="@{/deleteplayer/{id}(id=${item.id})}" th:if="${#strings.startsWith(user.userType, 'Manager')}">Delet‌​e</a>
+ --> 		
 <!--     <a colour="red" th:href="@{/viewplayer/{id}(id=${item?.id})}">View Player</a>
- -->      <a th:href="@{/viewplayer/{id}(id=${item?.id})}" class="btn btn-info" role="button">View Players Profile</a> 
+
+
+
+ --> 
+ 
+  <!--   <a style="color:red" th:if="${myteam != null}" th:href="@{/leaveteam/{id}(id=${myteam?.id})}">Remove Player?!</a> -->
+ 
+ 
+      <a th:href="@{/viewplayer/{id}(id=${item?.id})}" class="btn btn-info" role="button">View Players Profile</a> 
     
     </li>
     </th:block>

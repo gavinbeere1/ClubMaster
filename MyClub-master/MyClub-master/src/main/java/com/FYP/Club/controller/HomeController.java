@@ -135,6 +135,8 @@ public class HomeController {
 	    public String index() {
 	        return "test";
 	    }
+	  
+	
 	
 	  //websocket
 
@@ -1891,6 +1893,8 @@ model.addAttribute("user", user);
     	
     		userRepository.save(user);
 	
+    		model.addAttribute("user", user);
+    		
 		return "stats";
 	}
 	
@@ -2286,6 +2290,9 @@ model.addAttribute("user", user);
 			  model.addAttribute("user", user);
 		return "neededPlayers";
 	}
-	
+	  @RequestMapping(value = "/*")
+			public String error() {
+				return "404";
+			}
 
 }

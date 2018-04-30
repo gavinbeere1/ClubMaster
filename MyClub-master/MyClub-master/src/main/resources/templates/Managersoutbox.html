@@ -75,11 +75,11 @@
  	<td th:text="${outbox.status}"></td>
  	 
  	 <td>
- 	<a class="btn btn-info" role="button"   th:href="@{/viewPlayer/{name}(name=${outbox.receiverName})}"><span>View Player</span></a>
+ 	<a class="btn btn-info" role="button"   th:href="@{/viewPlayer/{name}(name=${outbox.receiverName})}"><span>View User</span></a>
  	</td>
  	<td>
  	
- 	 	       	<a class="btn btn-success" role="button" onclick="ConfirmAlert();" th:href="@{/approveAndJoin/{name}(name=${outbox.receiverName})}" th:if="${#strings.startsWith(outbox.status, 'Acc')}" ><span>Approve Player</span></a>
+ 	 	       	<a class="btn btn-success" role="button" onclick="ConfirmAlert();" th:href="@{/approveAndJoin/{name}(name=${outbox.receiverName})}" th:if="${#strings.startsWith(outbox.status, 'Acc')}" ><span>Approve ?</span></a>
 <!--  	<a style="color:blue" th:href="@{/approveAndJoin/{name}(name=${outbox.receiverName})}" th:if="${not #strings.startsWith(outbox.status, 'P')}">Join Team?!</a>
  --> 	</td>
 	
